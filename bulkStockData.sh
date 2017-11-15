@@ -47,6 +47,7 @@ function getStockData
     done < $in
     $awk -F, '{printf("%-5s%4s%2s%2s%010.4f%010.4f%010.4f%010.4f%010d\n", $1, $2, $3, $4, $5, $6, $7, $8, $9)}' $out >> $outfile
     $sed -i -e '/Invalid API call/d' $outfile
+    $sed -i -e '/Error Message/d' $outfile
     rm ${in}
     rm ${out}
   }
