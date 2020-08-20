@@ -16,7 +16,6 @@ Note: This is intended to run daily/weekly/monthly after market close as soon as
 ## LICENSE
 
 Copyright (c) 2020 Haynie IPHC, LLC
-
 Developed by Haynie Research & Development LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
