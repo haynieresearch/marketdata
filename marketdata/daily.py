@@ -30,7 +30,7 @@ from datetime import date, datetime, timedelta
 from .settings import *
 from .database import *
 
-today = date.today() - timedelta(days = 1)
+today = date.today() - timedelta(days = 0)
 now = datetime.now()
 data_date = today.strftime("%Y-%m-%d")
 sql_date = data_date + " 00:00:00"

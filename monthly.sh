@@ -1,10 +1,11 @@
+#!/bin/bash
 #**********************************************************
 #* CATEGORY	SOFTWARE
 #* GROUP	MARKET DATA
 #* AUTHOR	LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
 #* DATE		2020-08-20
 #* PURPOSE	ETL MARKET DATA INTO MYSQL TABLES
-#* FILE		__INIT__.PY
+#* FILE		MONTHLY.SH
 #**********************************************************
 #* MODIFICATIONS
 #* 2020-08-20 - LHAYNIE - INITIAL VERSION
@@ -21,9 +22,11 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
-from .settings import *
-from .database import *
-from .symbol import *
-from .overview import *
-from .daily import *
-from .technical import *
+
+python_bin=/usr/local/bin/python3.8
+
+$python_bin marketdata.py --exchange nyse
+$python_bin marketdata.py --exchange nasdaq
+$python_bin marketdata.py --daily
+$python_bin marketdata.py --technical
+$python_bin marketdata.py --overview

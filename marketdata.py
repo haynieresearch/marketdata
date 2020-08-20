@@ -41,6 +41,8 @@ else:
         marketdata.overview.update()
     elif sys.argv[1].lower() == "--daily":
         marketdata.daily.update()
+    elif sys.argv[1].lower() == "--technical":
+        marketdata.technical.update()
     else:
         print("Error: invalid option, use --help for options.")
 exit(0)
