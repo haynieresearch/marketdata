@@ -28,8 +28,15 @@ from datetime import date, datetime, timedelta
 from .settings import *
 from .database import *
 
-today = date.today() - timedelta(days = 0)
-now = datetime.now()
+now = datetime.strftime(datetime.utcnow(),"%H:%M:%S")
+t1 = "20:00:00"
+t2 = "23:59:59"
+
+if now >= t1 and now <= t2:
+    today = date.today() - timedelta(days = 0)
+else:
+    today = date.today() - timedelta(days = -1)
+
 data_date = today.strftime("%Y-%m-%d")
 sql_date = data_date + " 00:00:00"
 
