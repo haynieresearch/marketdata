@@ -23,7 +23,6 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 import sys
-import marketdata
 
 if sys.argv[1] == None:
     print("No option provided, use --help for options.")
@@ -32,16 +31,21 @@ else:
         print("help stuff")
     elif sys.argv[1].lower() == "--exchange":
         if sys.argv[2].lower() == "nyse":
+            import marketdata.symbol
             marketdata.symbol.update(marketdata.symbol.nyse())
         elif sys.argv[2].lower() == "nasdaq":
+            import marketdata.symbol
             marketdata.symbol.update(marketdata.symbol.nasdaq())
         else:
             print("Error: unrecognized exchange code.")
     elif sys.argv[1].lower() == "--overview":
+        import marketdata.overview
         marketdata.overview.update()
     elif sys.argv[1].lower() == "--daily":
+        import marketdata.daily
         marketdata.daily.update()
     elif sys.argv[1].lower() == "--technical":
+        import marketdata.technical
         marketdata.technical.update()
     elif sys.argv[1].lower() == "--check_config":
         print("Just making sure everything works!")
