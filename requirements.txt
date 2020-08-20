@@ -1,6 +1,4 @@
-urllib
-json
 pymysql
 numpy
 pandas
-pyyaml
+PyYAML

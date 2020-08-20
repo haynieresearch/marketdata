@@ -43,6 +43,8 @@ else:
         marketdata.daily.update()
     elif sys.argv[1].lower() == "--technical":
         marketdata.technical.update()
+    elif sys.argv[1].lower() == "--check_config":
+        print("Just making sure everything works!")
     else:
         print("Error: invalid option, use --help for options.")
 exit(0)
