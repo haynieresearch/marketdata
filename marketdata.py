@@ -39,6 +39,8 @@ else:
             print("Error: unrecognized exchange code.")
     elif sys.argv[1].lower() == "--overview":
         marketdata.overview.update()
+    elif sys.argv[1].lower() == "--daily":
+        marketdata.daily.update()
     else:
         print("Error: invalid option, use --help for options.")
 exit(0)

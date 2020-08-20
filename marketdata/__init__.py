@@ -25,3 +25,4 @@ from .settings import *
 from .database import *
 from .symbol import *
 from .overview import *
+from .daily import *
