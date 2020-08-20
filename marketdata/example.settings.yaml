@@ -1,0 +1,13 @@
+databases:
+    marketdata:
+        schema: ""
+        user: ""
+        password: ""
+        host: ""
+datasources:
+    AlphaVantage:
+        key: ""
+        url: "https://www.alphavantage.co/query?function="
+    SymbolList:
+        nasdaq: "https://datahub.io/core/nasdaq-listings/r/nasdaq-listed-symbols.csv"
+        nyse: "https://datahub.io/core/nyse-other-listings/r/nyse-listed.csv"
