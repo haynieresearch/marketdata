@@ -1,4 +1,4 @@
-# ETL Stock Data
+# ETL Stock Data [![Build Status](https://travis-ci.com/haynieresearch/stock-data.svg?branch=master)](https://travis-ci.com/haynieresearch/stock-data)
 This program is designed to extract data from a stock market API (currently [AlphaVantage](http://www.alphavantage.co)) and store it into a MySQL database.
 
 Requirements:
