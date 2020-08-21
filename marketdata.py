@@ -23,32 +23,81 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 import sys
+from datetime import date, datetime, timedelta
 
-if sys.argv[1] == None:
+now = date.today().strftime("%Y-%m-%d")
+now = "2020-08-20"
+
+if len(sys.argv) == 1:
+    args = sys.argv
     print("No option provided, use --help for options.")
+    exit(0)
+elif len(sys.argv) == 2:
+    args = sys.argv
+    arg1 = sys.argv[1]
+elif len(sys.argv) == 3:
+    args = sys.argv
+    arg1 = sys.argv[1]
+    arg2 = sys.argv[2]
+elif len(sys.argv) == 4:
+    args = sys.argv
+    arg1 = sys.argv[1]
+    arg2 = sys.argv[2]
+    arg3 = sys.argv[3]
 else:
-    if sys.argv[1].lower() == "--help":
+    print("No option provided, use --help for options.")
+    exit(0)
+
+if len(args) > 1:
+    if arg1.lower() == "--help":
         print("help stuff")
-    elif sys.argv[1].lower() == "--exchange":
-        if sys.argv[2].lower() == "nyse":
+
+    elif arg1.lower() == "--exchange":
+        if arg2.lower() == "nyse":
             import marketdata.symbol
             marketdata.symbol.update(marketdata.symbol.nyse())
-        elif sys.argv[2].lower() == "nasdaq":
+        elif arg2.lower() == "nasdaq":
             import marketdata.symbol
             marketdata.symbol.update(marketdata.symbol.nasdaq())
         else:
             print("Error: unrecognized exchange code.")
-    elif sys.argv[1].lower() == "--overview":
-        import marketdata.overview
-        marketdata.overview.update()
-    elif sys.argv[1].lower() == "--daily":
-        import marketdata.daily
-        marketdata.daily.update()
-    elif sys.argv[1].lower() == "--technical":
-        import marketdata.technical
-        marketdata.technical.update()
-    elif sys.argv[1].lower() == "--check_config":
+
+    elif arg1.lower() == "--daily":
+        if len(sys.argv) == 2:
+            import marketdata.daily
+            marketdata.daily.update(now)
+        elif len(sys.argv) > 2:
+            if arg2.lower() == "--segment":
+                if len(sys.argv) > 3:
+                    import marketdata.daily
+                    marketdata.daily.update_segment(arg3.lower(),now)
+                else:
+                    print("Error: missing segment value.")
+            else:
+                print("Error: invalid option.")
+        else:
+            print("Error: other error.")
+
+    elif arg1.lower() == "--technical":
+        if len(sys.argv) == 2:
+            import marketdata.technical
+            marketdata.daily.technical(now)
+        elif len(sys.argv) > 2:
+            if arg2.lower() == "--segment":
+                if len(sys.argv) > 3:
+                    import marketdata.technical
+                    marketdata.technical.update_segment(arg3.lower(),now)
+                else:
+                    print("Error: missing segment value.")
+            else:
+                print("Error: invalid option.")
+        else:
+            print("Error: other error.")
+
+    elif arg1.lower() == "--check_config":
         print("Just making sure everything works!")
     else:
         print("Error: invalid option, use --help for options.")
+else:
+    print("No option provided, use --help for options.")
 exit(0)

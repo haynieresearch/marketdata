@@ -21,9 +21,3 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
-from .settings import *
-from .database import *
-from .symbol import *
-from .overview import *
-from .daily import *
-from .technical import *

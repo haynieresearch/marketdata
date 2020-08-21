@@ -28,55 +28,49 @@ from datetime import date, datetime, timedelta
 from .settings import *
 from .database import *
 
-now = datetime.strftime(datetime.utcnow(),"%H:%M:%S")
-t1 = "20:00:00"
-t2 = "23:59:59"
+api_base = settings_data['datasources']['IEX']['url']
+api_key = settings_data['datasources']['IEX']['key']
 
-if now >= t1 and now <= t2:
-    today = date.today() - timedelta(days = 0)
-else:
-    today = date.today() - timedelta(days = -1)
+def numtest(input):
+    if isinstance(input, float) == True:
+        input = input
+    elif isinstance(input, int) == True:
+        input = input
+    else:
+        input = 0
+    return input
 
-data_date = today.strftime("%Y-%m-%d")
-sql_date = data_date + " 00:00:00"
-
-api_base = settings_data['datasources']['AlphaVantage']['url']
-api_key = settings_data['datasources']['AlphaVantage']['key']
-
-def update_daily(uuid,symbol):
+def update_daily(uuid,symbol,date):
+    api_date = date.replace('-', '')
+    data_date = date
+    sql_date = data_date + " 00:00:00"
     cursor = db.cursor()
     try:
         cursor.execute(f"select security_id from price where security_id = {uuid} AND date = '{sql_date}'")
         response = cursor.fetchone()
 
-        api_function = "TIME_SERIES_DAILY_ADJUSTED"
-        api = api_base + api_function + "&symbol=" + symbol + "&apikey=" + api_key
+        api = f"{api_base}/stock/{symbol}/chart/date/{api_date}?token={api_key}"
+        response_data = json.loads(urlreq.urlopen(api).read().decode())
+        response_data = response_data[-1]
 
-        try:
-            data = json.loads(urlreq.urlopen(api).read().decode())
-            if len(data)==0:
-                print("Error updating " + symbol + ", API response empty.")
-                return
-            if search("Invalid API call", json.dumps(data)):
-                print("Error updating " + symbol + ", API responded with error.")
-                return
-        except Exception as e:
-            print(e)
-
-        daily_data = data[[i for i in data.keys() if 'Time Series (Daily)' in i][0]]
-
-        if list(daily_data.keys())[0] != data_date:
-            print("Error updating " + symbol + ", API responded with incorrect date.")
-            return
-
-        open = daily_data[data_date]['1. open']
-        high = daily_data[data_date]['2. high']
-        low = daily_data[data_date]['3. low']
-        close = daily_data[data_date]['4. close']
-        adj_close = daily_data[data_date]['5. adjusted close']
-        volume = daily_data[data_date]['6. volume']
-        div_amt = daily_data[data_date]['7. dividend amount']
-        split_c = daily_data[data_date]['8. split coefficient']
+        high                    = numtest(response_data['high'])
+        low                     = numtest(response_data['low'])
+        average                 = numtest(response_data['average'])
+        volume                  = numtest(response_data['volume'])
+        notional                = numtest(response_data['notional'])
+        num_trades              = numtest(response_data['numberOfTrades'])
+        market_high             = numtest(response_data['marketHigh'])
+        market_low              = numtest(response_data['marketLow'])
+        market_avg              = numtest(response_data['marketAverage'])
+        market_volume           = numtest(response_data['marketVolume'])
+        market_notional         = numtest(response_data['marketNotional'])
+        market_num_trades       = numtest(response_data['marketNumberOfTrades'])
+        open                    = numtest(response_data['open'])
+        close                   = numtest(response_data['close'])
+        market_open             = numtest(response_data['marketOpen'])
+        market_close            = numtest(response_data['marketClose'])
+        change_over_time        = numtest(response_data['changeOverTime'])
+        market_change_over_time = numtest(response_data['marketChangeOverTime'])
 
         if response == None:
             sql = f"""
@@ -84,42 +78,72 @@ def update_daily(uuid,symbol):
                 price (
                     security_id,
                     date,
-                    open,
                     high,
                     low,
-                    close,
-                    adj_close,
+                    average,
                     volume,
-                    div_amount,
-                    split_c)
+                    notional,
+                    num_trades,
+                    market_high,
+                    market_low,
+                    market_avg,
+                    market_volume,
+                    market_notional,
+                    market_num_trades,
+                    open,
+                    close,
+                    market_open,
+                    market_close,
+                    change_over_time,
+                    market_change_over_time)
                 values(
                     {uuid},
                     '{sql_date}',
-                    {open},
                     {high},
                     {low},
-                    {close},
-                    {adj_close},
+                    {average},
                     {volume},
-                    {div_amt},
-                    {split_c});
+                    {notional},
+                    {num_trades},
+                    {market_high},
+                    {market_low},
+                    {market_avg},
+                    {market_volume},
+                    {market_notional},
+                    {market_num_trades},
+                    {open},
+                    {close},
+                    {market_open},
+                    {market_close},
+                    {change_over_time},
+                    {market_change_over_time});
                 """
             try:
                 cursor.execute(sql)
                 db.commit()
-                print("Adding " + symbol + " daily data to database.")
+                print("Adding " + symbol + " price data to database.")
             except Exception as e:
                 print(e)
         else:
             sql = f"""
-                UPDATE price SET open = {open},
-                high = {high},
+                UPDATE price SET high = {high},
                 low = {low},
-                close = {close},
-                adj_close = {adj_close},
+                average = {average},
                 volume = {volume},
-                div_amount = {div_amt},
-                split_c = {split_c}
+                notional = {notional},
+                num_trades = {num_trades},
+                market_high = {market_high},
+                market_low = {market_low},
+                market_avg = {market_avg},
+                market_volume = {market_volume},
+                market_notional = {market_notional},
+                market_num_trades = {market_num_trades},
+                open = {open},
+                close = {close},
+                market_open = {market_open},
+                market_close = {market_close},
+                change_over_time = {change_over_time},
+                market_change_over_time = {market_change_over_time}
                 WHERE security_id = {uuid} AND date = '{sql_date}';
                 """
             try:
@@ -132,7 +156,7 @@ def update_daily(uuid,symbol):
     except Exception as e:
         print(e)
 
-def update():
+def update(date):
     cursor = db.cursor()
     try:
         cursor.execute("select uuid, symbol from security")
@@ -140,7 +164,21 @@ def update():
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            update_daily(uuid, symbol)
+            update_daily(uuid, symbol, date)
+
+    except Exception as e:
+        print(e)
+    db.close()
+
+def update_segment(segment,date):
+    cursor = db.cursor()
+    try:
+        cursor.execute(f"select uuid, symbol from security_segment where segment = '{segment}'")
+        results = cursor.fetchall()
+        for row in results:
+            uuid = row[0]
+            symbol = row[1]
+            update_daily(uuid, symbol, date)
 
     except Exception as e:
         print(e)

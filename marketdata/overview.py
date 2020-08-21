@@ -24,13 +24,16 @@
 import urllib.request as urlreq
 import json
 from re import search
+from datetime import date, datetime, timedelta
 from .settings import *
 from .database import *
 
 api_base = settings_data['datasources']['AlphaVantage']['url']
 api_key = settings_data['datasources']['AlphaVantage']['key']
 
-def update_overview(uuid,symbol):
+def update_overview(uuid,symbol,date):
+    data_date = date
+    sql_date = data_date + " 00:00:00"
     cursor = db.cursor()
     try:
         cursor.execute(f"select security_id from overview where security_id = {uuid}")
@@ -341,7 +344,7 @@ def update_overview(uuid,symbol):
     except Exception as e:
         print(e)
 
-def update():
+def update(date):
     cursor = db.cursor()
     try:
         cursor.execute("select uuid, symbol from security")
@@ -349,7 +352,21 @@ def update():
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            update_overview(uuid, symbol)
+            update_overview(uuid, symbol, date)
+
+    except Exception as e:
+        print(e)
+    db.close()
+
+def update_segment(segment,date):
+    cursor = db.cursor()
+    try:
+        cursor.execute(f"select uuid, symbol from security_segment where segment = '{segment}'")
+        results = cursor.fetchall()
+        for row in results:
+            uuid = row[0]
+            symbol = row[1]
+            update_overview(uuid, symbol, date)
 
     except Exception as e:
         print(e)
