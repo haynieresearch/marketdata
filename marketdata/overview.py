@@ -21,6 +21,7 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
+import time
 import urllib.request as urlreq
 import json
 from re import search
@@ -30,6 +31,18 @@ from .database import *
 
 api_base = settings_data['datasources']['AlphaVantage']['url']
 api_key = settings_data['datasources']['AlphaVantage']['key']
+
+def numtest(input):
+    if isinstance(input, float) == True:
+        input = input
+    elif isinstance(input, int) == True:
+        input = input
+    else:
+        try:
+            input = float(input)
+        except:
+            input = 0
+    return input
 
 def update_overview(uuid,symbol,date):
     data_date = date
@@ -58,95 +71,52 @@ def update_overview(uuid,symbol,date):
         sector = data['Sector']
         industry = data['Industry']
         address = data['Address'].replace(',', '')
-        fte = data['FullTimeEmployees']
-        if fte == "None": fte = 0
-        fiscal_ye = data['FiscalYearEnd']
+        fte = numtest(data['FullTimeEmployees'])
+        fiscal_ye = numtest(data['FiscalYearEnd'])
         latest_qtr = data['LatestQuarter'] + " 00:00:00"
         if data['LatestQuarter'] == "None": latest_qtr = "0000-00-00 00:00:00"
-        market_cap = data['MarketCapitalization']
-        if market_cap == "None": market_cap = 0
-        ebitda = data['EBITDA']
-        if ebitda == "None": ebitda = 0
-        pe_ratio = data['PERatio']
-        if pe_ratio == "None": pe_ratio = 0
-        peg_ratio = data['PEGRatio']
-        if peg_ratio == "None": peg_ratio = 0
-        book_value = data['BookValue']
-        if book_value == "None": book_value = 0
-        div_per_share = data['DividendPerShare']
-        if div_per_share == "None": div_per_share = 0
-        div_yield = data['DividendYield']
-        if div_yield == "None": div_yield = 0
-        eps = data['EPS']
-        if eps == "None": eps = 0
-        revenue_per_share = data['RevenuePerShareTTM']
-        if revenue_per_share == "None": revenue_per_share = 0
-        profit_margin = data['ProfitMargin']
-        if profit_margin == "None": profit_margin = 0
-        ops_margin = data['OperatingMarginTTM']
-        if ops_margin == "None": ops_margin = 0
-        return_on_assets = data['ReturnOnAssetsTTM']
-        if return_on_assets == "None": return_on_assets = 0
-        return_on_equity = data['ReturnOnEquityTTM']
-        if return_on_equity == "None": return_on_equity = 0
-        revenue = data['RevenueTTM']
-        if revenue == "None": revenue = 0
-        gross_profit = data['GrossProfitTTM']
-        if gross_profit == "None": gross_profit = 0
-        diluted_eps = data['DilutedEPSTTM']
-        if diluted_eps == "None": diluted_eps = 0
-        qtr_earnings_growth_yoy = data['QuarterlyEarningsGrowthYOY']
-        if qtr_earnings_growth_yoy == "None": qtr_earnings_growth_yoy = 0
-        qtr_revenue_growth_yoy = data['QuarterlyRevenueGrowthYOY']
-        if qtr_revenue_growth_yoy == "None": qtr_revenue_growth_yoy = 0
-        analyst_target_price = data['AnalystTargetPrice']
-        if analyst_target_price == "None": analyst_target_price = 0
-        trailing_pe = data['TrailingPE']
-        if trailing_pe == "None": trailing_pe = 0
-        forward_pe = data['ForwardPE']
-        if forward_pe == "None": forward_pe = 0
-        price_to_sales_ratio = data['PriceToSalesRatioTTM']
-        if price_to_sales_ratio == "None": price_to_sales_ratio = 0
-        price_to_book_ratio = data['PriceToBookRatio']
-        if price_to_book_ratio == "None": price_to_book_ratio = 0
-        ev_to_revenue = data['EVToRevenue']
-        if ev_to_revenue == "None": ev_to_revenue = 0
-        ev_to_ebitda = data['EVToEBITDA']
-        if ev_to_ebitda == "None": ev_to_ebitda = 0
-        beta = data['Beta']
-        if beta == "None": beta = 0
-        x52_week_high = data['52WeekHigh']
-        if x52_week_high == "None": x52_week_high = 0
-        x52_week_low = data['52WeekLow']
-        if x52_week_low == "None": x52_week_low = 0
-        x50_day_moving_avg = data['50DayMovingAverage']
-        if x50_day_moving_avg == "None": x50_day_moving_avg = 0
-        x200_day_moving_avg = data['200DayMovingAverage']
-        if x200_day_moving_avg == "None": x200_day_moving_avg = 0
-        shares_outstanding = data['SharesOutstanding']
-        if shares_outstanding == "None": shares_outstanding = 0
-        shares_float = data['SharesFloat']
-        if shares_float == "None": shares_float = 0
-        shares_short = data['SharesShort']
-        if shares_short == "None": shares_short = 0
-        shares_short_prior_month = data['SharesShortPriorMonth']
-        if shares_short_prior_month == "None": shares_short_prior_month = 0
-        short_ratio = data['ShortRatio']
-        if short_ratio == "None": short_ratio = 0
-        short_percent_outstanding = data['ShortPercentOutstanding']
-        if short_percent_outstanding == "None": short_percent_outstanding = 0
-        short_percent_float = data['ShortPercentFloat']
-        if short_percent_float == "None": short_percent_float = 0
-        percent_insider = data['PercentInsiders']
-        if percent_insider == "None": percent_insider = 0
-        percent_institution = data['PercentInstitutions']
-        if percent_institution == "None": percent_institution = 0
-        forward_annual_div_rate = data['ForwardAnnualDividendRate']
-        if forward_annual_div_rate == "None": forward_annual_div_rate = 0
-        forward_annual_div_yield = data['ForwardAnnualDividendYield']
-        if forward_annual_div_yield == "None": forward_annual_div_yield = 0
-        payout_ratio = data['PayoutRatio']
-        if payout_ratio == "None": payout_ratio = 0
+        market_cap = numtest(data['MarketCapitalization'])
+        ebitda = numtest(data['EBITDA'])
+        pe_ratio = numtest(data['PERatio'])
+        peg_ratio = numtest(data['PEGRatio'])
+        book_value = numtest(data['BookValue'])
+        div_per_share = numtest(data['DividendPerShare'])
+        div_yield = numtest(data['DividendYield'])
+        eps = numtest(data['EPS'])
+        revenue_per_share = numtest(data['RevenuePerShareTTM'])
+        profit_margin = numtest(data['ProfitMargin'])
+        ops_margin = numtest(data['OperatingMarginTTM'])
+        return_on_assets = numtest(data['ReturnOnAssetsTTM'])
+        return_on_equity = numtest(data['ReturnOnEquityTTM'])
+        revenue = numtest(data['RevenueTTM'])
+        gross_profit = numtest(data['GrossProfitTTM'])
+        diluted_eps = numtest(data['DilutedEPSTTM'])
+        qtr_earnings_growth_yoy = numtest(data['QuarterlyEarningsGrowthYOY'])
+        qtr_revenue_growth_yoy = numtest(data['QuarterlyRevenueGrowthYOY'])
+        analyst_target_price = numtest(data['AnalystTargetPrice'])
+        trailing_pe = numtest(data['TrailingPE'])
+        forward_pe = numtest(data['ForwardPE'])
+        price_to_sales_ratio = numtest(data['PriceToSalesRatioTTM'])
+        price_to_book_ratio = numtest(data['PriceToBookRatio'])
+        ev_to_revenue = numtest(data['EVToRevenue'])
+        ev_to_ebitda = numtest(data['EVToEBITDA'])
+        beta = numtest(data['Beta'])
+        x52_week_high = numtest(data['52WeekHigh'])
+        x52_week_low = numtest(data['52WeekLow'])
+        x50_day_moving_avg = numtest(data['50DayMovingAverage'])
+        x200_day_moving_avg = numtest(data['200DayMovingAverage'])
+        shares_outstanding = numtest(data['SharesOutstanding'])
+        shares_float = numtest(data['SharesFloat'])
+        shares_short = numtest(data['SharesShort'])
+        shares_short_prior_month = numtest(data['SharesShortPriorMonth'])
+        short_ratio = numtest(data['ShortRatio'])
+        short_percent_outstanding = numtest(data['ShortPercentOutstanding'])
+        short_percent_float = numtest(data['ShortPercentFloat'])
+        percent_insider = numtest(data['PercentInsiders'])
+        percent_institution = numtest(data['PercentInstitutions'])
+        forward_annual_div_rate = numtest(data['ForwardAnnualDividendRate'])
+        forward_annual_div_yield = numtest(data['ForwardAnnualDividendYield'])
+        payout_ratio = numtest(data['PayoutRatio'])
         div_date = data['DividendDate'] + " 00:00:00"
         if data['DividendDate'] == "None": div_date = "0000-00-00 00:00:00"
         ex_div_date = data['ExDividendDate'] + " 00:00:00"
@@ -353,6 +323,7 @@ def update(date):
             uuid = row[0]
             symbol = row[1]
             update_overview(uuid, symbol, date)
+            time.sleep(1)
 
     except Exception as e:
         print(e)
@@ -367,6 +338,7 @@ def update_segment(segment,date):
             uuid = row[0]
             symbol = row[1]
             update_overview(uuid, symbol, date)
+            time.sleep(1)
 
     except Exception as e:
         print(e)

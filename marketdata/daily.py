@@ -21,6 +21,7 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
+import time
 import urllib.request as urlreq
 import json
 from re import search
@@ -28,8 +29,8 @@ from datetime import date, datetime, timedelta
 from .settings import *
 from .database import *
 
-api_base = settings_data['datasources']['IEX']['url']
-api_key = settings_data['datasources']['IEX']['key']
+api_base = settings_data['datasources']['AlphaVantage']['url']
+api_key = settings_data['datasources']['AlphaVantage']['key']
 
 def numtest(input):
     if isinstance(input, float) == True:
@@ -37,11 +38,13 @@ def numtest(input):
     elif isinstance(input, int) == True:
         input = input
     else:
-        input = 0
+        try:
+            input = float(input)
+        except:
+            input = 0
     return input
 
 def update_daily(uuid,symbol,date):
-    api_date = date.replace('-', '')
     data_date = date
     sql_date = data_date + " 00:00:00"
     cursor = db.cursor()
@@ -49,28 +52,19 @@ def update_daily(uuid,symbol,date):
         cursor.execute(f"select security_id from price where security_id = {uuid} AND date = '{sql_date}'")
         response = cursor.fetchone()
 
-        api = f"{api_base}/stock/{symbol}/chart/date/{api_date}?token={api_key}"
-        response_data = json.loads(urlreq.urlopen(api).read().decode())
-        response_data = response_data[-1]
+        api = f"{api_base}TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&apikey={api_key}"
+        response_data = json.loads(urlreq.urlopen(api).read().decode('utf-8'))
+        response_data = response_data['Time Series (Daily)'][date]
 
-        high                    = numtest(response_data['high'])
-        low                     = numtest(response_data['low'])
-        average                 = numtest(response_data['average'])
-        volume                  = numtest(response_data['volume'])
-        notional                = numtest(response_data['notional'])
-        num_trades              = numtest(response_data['numberOfTrades'])
-        market_high             = numtest(response_data['marketHigh'])
-        market_low              = numtest(response_data['marketLow'])
-        market_avg              = numtest(response_data['marketAverage'])
-        market_volume           = numtest(response_data['marketVolume'])
-        market_notional         = numtest(response_data['marketNotional'])
-        market_num_trades       = numtest(response_data['marketNumberOfTrades'])
-        open                    = numtest(response_data['open'])
-        close                   = numtest(response_data['close'])
-        market_open             = numtest(response_data['marketOpen'])
-        market_close            = numtest(response_data['marketClose'])
-        change_over_time        = numtest(response_data['changeOverTime'])
-        market_change_over_time = numtest(response_data['marketChangeOverTime'])
+        open        = numtest(response_data['1. open'])
+        high        = numtest(response_data['2. high'])
+        low         = numtest(response_data['3. low'])
+        close       = numtest(response_data['4. close'])
+        adj_close   = numtest(response_data['5. adjusted close'])
+        volume      = numtest(response_data['6. volume'])
+        div_amt     = numtest(response_data['7. dividend amount'])
+        split_c     = numtest(response_data['8. split coefficient'])
+
 
         if response == None:
             sql = f"""
@@ -78,72 +72,43 @@ def update_daily(uuid,symbol,date):
                 price (
                     security_id,
                     date,
+                    open,
                     high,
                     low,
-                    average,
-                    volume,
-                    notional,
-                    num_trades,
-                    market_high,
-                    market_low,
-                    market_avg,
-                    market_volume,
-                    market_notional,
-                    market_num_trades,
-                    open,
                     close,
-                    market_open,
-                    market_close,
-                    change_over_time,
-                    market_change_over_time)
+                    adj_close,
+                    volume,
+                    div_amt,
+                    split_c)
                 values(
                     {uuid},
                     '{sql_date}',
+                    {open},
                     {high},
                     {low},
-                    {average},
-                    {volume},
-                    {notional},
-                    {num_trades},
-                    {market_high},
-                    {market_low},
-                    {market_avg},
-                    {market_volume},
-                    {market_notional},
-                    {market_num_trades},
-                    {open},
                     {close},
-                    {market_open},
-                    {market_close},
-                    {change_over_time},
-                    {market_change_over_time});
+                    {adj_close},
+                    {volume},
+                    {div_amt},
+                    {split_c});
                 """
             try:
                 cursor.execute(sql)
                 db.commit()
                 print("Adding " + symbol + " price data to database.")
             except Exception as e:
+                print("Error adding " + symbol)
                 print(e)
         else:
             sql = f"""
-                UPDATE price SET high = {high},
+                UPDATE price SET open = {open},
+                high = {high},
                 low = {low},
-                average = {average},
-                volume = {volume},
-                notional = {notional},
-                num_trades = {num_trades},
-                market_high = {market_high},
-                market_low = {market_low},
-                market_avg = {market_avg},
-                market_volume = {market_volume},
-                market_notional = {market_notional},
-                market_num_trades = {market_num_trades},
-                open = {open},
                 close = {close},
-                market_open = {market_open},
-                market_close = {market_close},
-                change_over_time = {change_over_time},
-                market_change_over_time = {market_change_over_time}
+                adj_close = {adj_close},
+                volume = {volume},
+                div_amt = {div_amt},
+                split_c = {split_c}
                 WHERE security_id = {uuid} AND date = '{sql_date}';
                 """
             try:
@@ -151,9 +116,11 @@ def update_daily(uuid,symbol,date):
                 db.commit()
                 print("Updating " + symbol + " daily data in database.")
             except Exception as e:
+                print("Error updating " + symbol)
                 print(e)
 
     except Exception as e:
+        print("Error! " + symbol)
         print(e)
 
 def update(date):
@@ -165,6 +132,7 @@ def update(date):
             uuid = row[0]
             symbol = row[1]
             update_daily(uuid, symbol, date)
+            time.sleep(1)
 
     except Exception as e:
         print(e)
@@ -179,6 +147,7 @@ def update_segment(segment,date):
             uuid = row[0]
             symbol = row[1]
             update_daily(uuid, symbol, date)
+            time.sleep(1)
 
     except Exception as e:
         print(e)

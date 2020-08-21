@@ -94,6 +94,22 @@ if len(args) > 1:
         else:
             print("Error: other error.")
 
+    elif arg1.lower() == "--overview":
+        if len(sys.argv) == 2:
+            import marketdata.overview
+            marketdata.daily.overview(now)
+        elif len(sys.argv) > 2:
+            if arg2.lower() == "--segment":
+                if len(sys.argv) > 3:
+                    import marketdata.overview
+                    marketdata.overview.update_segment(arg3.lower(),now)
+                else:
+                    print("Error: missing segment value.")
+            else:
+                print("Error: invalid option.")
+        else:
+            print("Error: other error.")
+
     elif arg1.lower() == "--check_config":
         print("Just making sure everything works!")
     else:
