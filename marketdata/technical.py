@@ -21,6 +21,7 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
+import time
 import urllib.request as urlreq
 import json
 from re import search
@@ -28,8 +29,8 @@ from datetime import date, datetime, timedelta
 from .settings import *
 from .database import *
 
-api_base = settings_data['datasources']['IEX']['url']
-api_key = settings_data['datasources']['IEX']['key']
+api_base = settings_data['datasources']['AlphaVantage']['url']
+api_key = settings_data['datasources']['AlphaVantage']['key']
 
 def numtest(input):
     if isinstance(input, float) == True:
@@ -37,47 +38,57 @@ def numtest(input):
     elif isinstance(input, int) == True:
         input = input
     else:
-        input = 0
+        try:
+            input = float(input)
+        except:
+            input = 0
     return input
 
-def tech_ind(base,sym,ind,key):
-    api = f"{base}/stock/{sym}/indicator/{ind}?range=5d&token={key}"
-    response_data = json.loads(urlreq.urlopen(api).read().decode())
-    return response_data['indicator'][0][4]
+def get_tech(ind,symbol,api_key,base,date):
+    try:
+        api = base + f"{ind}" + "&symbol=" + symbol + "&interval=daily&time_period=10&series_type=open&apikey=" + api_key
+        data = json.loads(urlreq.urlopen(api).read().decode())
+    except Exception as e:
+        print("Error with API call.")
+        print(e)
 
-def tech_ind_range(base,sym,ind,key):
-    api = f"{base}/stock/{sym}/indicator/{ind}?range=ytd&token={key}"
-    response_data = json.loads(urlreq.urlopen(api).read().decode())
-    response = {}
-    response[0] = response_data['indicator'][0][-1]
-    response[1] = response_data['indicator'][1][-1]
-    response[2] = response_data['indicator'][2][-1]
-    return response
+    try:
+        json_txt = f"Technical Analysis: {ind}"
+        data = data[json_txt][date]
+    except Exception as e:
+        print("Error assigning API variable.")
+        print(e)
+    return data
 
 def update_technical(uuid,symbol,date):
     data_date = date
     sql_date = data_date + " 00:00:00"
     cursor = db.cursor()
+
     try:
         cursor.execute(f"select security_id from technical where security_id = {uuid} AND date = '{sql_date}'")
         response = cursor.fetchone()
 
-        sma             = numtest(tech_ind(api_base,symbol,"sma",api_key))
-        ema             = numtest(tech_ind(api_base,symbol,"ema",api_key))
-        willr           = numtest(tech_ind(api_base,symbol,"willr",api_key))
-        decay           = numtest(tech_ind(api_base,symbol,"decay",api_key))
-        fisher          = numtest(tech_ind(api_base,symbol,"fisher",api_key))
-        kama            = numtest(tech_ind(api_base,symbol,"fisher",api_key))
-        kvo             = numtest(tech_ind(api_base,symbol,"kvo",api_key))
-        linreg          = numtest(tech_ind(api_base,symbol,"linreg",api_key))
-        linregintercept = numtest(tech_ind(api_base,symbol,"linregintercept",api_key))
-        linregslope     = numtest(tech_ind(api_base,symbol,"linregslope",api_key))
-        macd            = numtest(tech_ind_range(api_base,symbol,"macd",api_key)[0])
-        macd_signal     = numtest(tech_ind_range(api_base,symbol,"macd",api_key)[1])
-        macd_hist       = numtest(tech_ind_range(api_base,symbol,"macd",api_key)[2])
-        bbands_lower    = numtest(tech_ind_range(api_base,symbol,"bbands",api_key)[0])
-        bbands_middle   = numtest(tech_ind_range(api_base,symbol,"bbands",api_key)[1])
-        bbands_upper    = numtest(tech_ind_range(api_base,symbol,"bbands",api_key)[2])
+        try:
+            sma = numtest(get_tech("SMA",symbol,api_key,api_base,data_date)["SMA"])
+            ema = numtest(get_tech("EMA",symbol,api_key,api_base,data_date)["EMA"])
+            macd = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD"])
+            macd_hist = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Hist"])
+            macd_signal = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Signal"])
+            stoch_slowk = numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowK"])
+            stoch_slowd = numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowD"])
+            rsi = numtest(get_tech("RSI",symbol,api_key,api_base,data_date)["RSI"])
+            stochrsi_fastk = numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastK"])
+            stochrsi_fastd = numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastD"])
+            willr = numtest(get_tech("WILLR",symbol,api_key,api_base,data_date)["WILLR"])
+            bbands_upper = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Upper Band"])
+            bbands_lower = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Lower Band"])
+            bbands_middle = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Middle Band"])
+            roc = numtest(get_tech("ROC",symbol,api_key,api_base,data_date)["ROC"])
+            rocr = numtest(get_tech("ROCR",symbol,api_key,api_base,data_date)["ROCR"])
+        except Exception as e:
+            print("Error assigning variables.")
+            print(e)
 
         if response == None:
             sql = f"""
@@ -87,17 +98,17 @@ def update_technical(uuid,symbol,date):
                     date,
                     sma,
                     ema,
-                    willr,
-                    decay,
-                    fisher,
-                    kama,
-                    kvo,
-                    linreg,
-                    linregintercept,
-                    linregslope,
                     macd,
                     macd_signal,
                     macd_hist,
+                    stoch_slow_d,
+                    stoch_slow_k,
+                    rsi,
+                    stochrsi_fast_k,
+                    stochrsi_fast_d,
+                    willr,
+                    roc,
+                    rocr,
                     bbands_lower,
                     bbands_upper,
                     bbands_middle)
@@ -106,17 +117,17 @@ def update_technical(uuid,symbol,date):
                     '{sql_date}',
                     {sma},
                     {ema},
-                    {willr},
-                    {decay},
-                    {fisher},
-                    {kama},
-                    {kvo},
-                    {linreg},
-                    {linregintercept},
-                    {linregslope},
                     {macd},
                     {macd_signal},
                     {macd_hist},
+                    {stoch_slowd},
+                    {stoch_slowk},
+                    {rsi},
+                    {stochrsi_fastk},
+                    {stochrsi_fastd},
+                    {willr},
+                    {roc},
+                    {rocr},
                     {bbands_lower},
                     {bbands_upper},
                     {bbands_middle});
@@ -126,22 +137,23 @@ def update_technical(uuid,symbol,date):
                 db.commit()
                 print("Adding " + symbol + " technical data to database.")
             except Exception as e:
+                print("Error Adding " + symbol + " technical data to database.")
                 print(e)
         else:
             sql = f"""
                 UPDATE technical SET sma = {sma},
                 ema = {ema},
-                willr = {macd},
-                decay = {macd_signal},
-                fisher = {macd_hist},
-                kama = {stoch_slowd},
-                kvo = {stoch_slowk},
-                linreg = {rsi},
-                linregintercept = {stochrsi_fastk},
-                linregslope = {stochrsi_fastd},
-                macd = {willr},
-                macd_signal = {roc},
-                macd_hist = {rocr},
+                macd = {macd},
+                macd_signal = {macd_signal},
+                macd_hist = {macd_hist},
+                stoch_slow_d = {stoch_slowd},
+                stoch_slow_k = {stoch_slowk},
+                rsi = {rsi},
+                stochrsi_fast_k = {stochrsi_fastk},
+                stochrsi_fast_d = {stochrsi_fastd},
+                willr = {willr},
+                roc = {roc},
+                rocr = {rocr},
                 bbands_lower = {bbands_lower},
                 bbands_upper = {bbands_upper},
                 bbands_middle = {bbands_middle}
@@ -152,6 +164,7 @@ def update_technical(uuid,symbol,date):
                 db.commit()
                 print("Updating " + symbol + " technical data in database.")
             except Exception as e:
+                print("Error updating " + symbol + " technical data in database.")
                 print(e)
 
     except Exception as e:
@@ -166,6 +179,7 @@ def update(date):
             uuid = row[0]
             symbol = row[1]
             update_technical(uuid, symbol, date)
+            time.sleep(1)
 
     except Exception as e:
         print(e)
@@ -180,6 +194,7 @@ def update_segment(segment, date):
             uuid = row[0]
             symbol = row[1]
             update_technical(uuid, symbol, date)
+            time.sleep(1)
 
     except Exception as e:
         print(e)

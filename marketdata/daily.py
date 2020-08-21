@@ -65,7 +65,6 @@ def update_daily(uuid,symbol,date):
         div_amt     = numtest(response_data['7. dividend amount'])
         split_c     = numtest(response_data['8. split coefficient'])
 
-
         if response == None:
             sql = f"""
                 INSERT INTO
