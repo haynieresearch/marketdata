@@ -22,7 +22,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 import pymysql
-from .settings import *
+from .settings import settings_data
 
 db_info = {}
 db_info['user'] = settings_data['databases']['marketdata']['user']

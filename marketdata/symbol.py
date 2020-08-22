@@ -22,8 +22,8 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 import pandas as pd
-from .settings import *
-from .database import *
+from .settings import settings_data
+from .database import db
 
 datasrc = {}
 datasrc['nasdaq'] = settings_data['datasources']['SymbolList']['nasdaq']

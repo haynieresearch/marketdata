@@ -26,8 +26,8 @@ import urllib.request as urlreq
 import json
 from re import search
 from datetime import date, datetime, timedelta
-from .settings import *
-from .database import *
+from .settings import settings_data
+from .database import db
 
 api_base = settings_data['datasources']['AlphaVantage']['url']
 api_key = settings_data['datasources']['AlphaVantage']['key']
