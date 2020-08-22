@@ -39,7 +39,7 @@ def nyse(source = datasrc['nyse']):
     data.columns = ['symbol', 'company']
     return sorted(list(data.symbol));
 
-def update(exchange):
+def update(exchange,exchange_id):
     cursor = db.cursor()
     try:
         for index in range(len(exchange)):
@@ -51,16 +51,28 @@ def update(exchange):
             symbol = exchange[index]
 
             if response == None:
-                sql = f"INSERT INTO security (symbol, type_id, exchange_id, currency_id) VALUES('{symbol}', 1, 2, 1);"
+                sql = f"INSERT INTO security (symbol, type_id, exchange_id, currency_id) VALUES('{symbol}', 1, {exchange_id}, 1);"
                 try:
                     cursor.execute(sql)
                     db.commit()
-                    print("Symbol:" + exchange[index] + " added to database.")
+                    print("Symbol:" + symbol + " added to database.")
                 except:
                     db.rollback()
                     print(e)
             else:
-                print("Symbol: " + exchange[index] + " already exists in database.")
+                sql = f"""
+                    UPDATE security SET type_id = 1,
+                    exchange_id = {exchange_id},
+                    currency_id = 1
+                    WHERE symbol = \"{symbol}\";
+                    """
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                    print("Updating " + symbol + " in database.")
+                except Exception as e:
+                    print("Error updating " + symbol)
+                    print(e)
     except Exception as e:
         print(e)
     db.close()

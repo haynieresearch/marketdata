@@ -55,10 +55,10 @@ if len(args) > 1:
     elif arg1.lower() == "--exchange":
         if arg2.lower() == "nyse":
             import marketdata.symbol
-            marketdata.symbol.update(marketdata.symbol.nyse())
+            marketdata.symbol.update(marketdata.symbol.nyse(),1)
         elif arg2.lower() == "nasdaq":
             import marketdata.symbol
-            marketdata.symbol.update(marketdata.symbol.nasdaq())
+            marketdata.symbol.update(marketdata.symbol.nasdaq(),2)
         else:
             print("Error: unrecognized exchange code.")
 
@@ -109,6 +109,15 @@ if len(args) > 1:
                 print("Error: invalid option.")
         else:
             print("Error: other error.")
+
+    elif arg1.lower() == "--update":
+        if len(arg2) > 1:
+            import marketdata.daily
+            import marketdata.technical
+            marketdata.daily.update(arg2)
+            marketdata.daily.technical(arg2)
+        else:
+            print("Error: you did not input a date.")
 
     elif arg1.lower() == "--check_config":
         print("Just making sure everything works!")
