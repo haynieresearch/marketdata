@@ -44,7 +44,6 @@ def numtest(input):
     return input
 
 def update_overview(uuid,symbol,date):
-    data_date = date
     cursor = db.cursor()
     try:
         cursor.execute(f"select security_id from overview where security_id = {uuid}")

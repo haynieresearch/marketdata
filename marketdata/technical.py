@@ -24,7 +24,6 @@
 import time
 import urllib.request as urlreq
 import json
-from datetime import date, datetime, timedelta
 from .settings import settings_data
 from .database import db
 
