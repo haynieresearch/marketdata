@@ -25,7 +25,6 @@ import time
 import urllib.request as urlreq
 import json
 from re import search
-from datetime import date, datetime, timedelta
 from .settings import settings_data
 from .database import db
 
@@ -46,7 +45,6 @@ def numtest(input):
 
 def update_overview(uuid,symbol,date):
     data_date = date
-    sql_date = data_date + " 00:00:00"
     cursor = db.cursor()
     try:
         cursor.execute(f"select security_id from overview where security_id = {uuid}")

@@ -56,7 +56,7 @@ def update(exchange,exchange_id):
                     cursor.execute(sql)
                     db.commit()
                     print("Symbol:" + symbol + " added to database.")
-                except:
+                except Exception as e:
                     db.rollback()
                     print(e)
             else:
