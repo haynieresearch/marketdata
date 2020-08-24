@@ -312,6 +312,7 @@ def update_overview(uuid,symbol,date):
         print(e)
 
 def update(date):
+    print("Updating Overview Data")
     cursor = db.cursor()
     try:
         cursor.execute("select uuid, symbol from security")
@@ -327,6 +328,7 @@ def update(date):
     db.close()
 
 def update_segment(segment,date):
+    print("Updating Overview Data")
     cursor = db.cursor()
     try:
         cursor.execute(f"select uuid, symbol from security_segment where segment = '{segment}'")

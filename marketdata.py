@@ -26,7 +26,7 @@ import sys
 from datetime import date
 
 now = date.today().strftime("%Y-%m-%d")
-now = "2020-08-20"
+now = "2020-08-03"
 
 if len(sys.argv) == 1:
     args = sys.argv
@@ -78,22 +78,6 @@ if len(args) > 1:
         else:
             print("Error: other error.")
 
-    elif arg1.lower() == "--technical":
-        if len(sys.argv) == 2:
-            import marketdata.technical
-            marketdata.daily.technical(now)
-        elif len(sys.argv) > 2:
-            if arg2.lower() == "--segment":
-                if len(sys.argv) > 3:
-                    import marketdata.technical
-                    marketdata.technical.update_segment(arg3.lower(),now)
-                else:
-                    print("Error: missing segment value.")
-            else:
-                print("Error: invalid option.")
-        else:
-            print("Error: other error.")
-
     elif arg1.lower() == "--overview":
         if len(sys.argv) == 2:
             import marketdata.overview
@@ -113,9 +97,9 @@ if len(args) > 1:
     elif arg1.lower() == "--update":
         if len(arg2) > 1:
             import marketdata.daily
-            import marketdata.technical
             marketdata.daily.update(arg2)
-            marketdata.daily.technical(arg2)
+            import marketdata.technical
+            marketdata.technical.update(arg2)
         else:
             print("Error: you did not input a date.")
 
