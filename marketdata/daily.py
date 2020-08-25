@@ -98,24 +98,7 @@ def price(uuid,symbol,date):
                 print("Error adding " + symbol)
                 print(e)
         else:
-            sql = f"""
-                UPDATE price SET open = {open},
-                high = {high},
-                low = {low},
-                close = {close},
-                adj_close = {adj_close},
-                volume = {volume},
-                div_amt = {div_amt},
-                split_c = {split_c}
-                WHERE security_id = {uuid} AND date = '{sql_date}';
-                """
-            try:
-                cursor.execute(sql)
-                db.commit()
-                print("Updating " + symbol + " daily data in database.")
-            except Exception as e:
-                print("Error updating " + symbol)
-                print(e)
+            print(symbol + " already in daily data in database for " + data_date + ".")
 
     except Exception as e:
         print("Error! " + symbol)
@@ -219,32 +202,7 @@ def technical(uuid,symbol,date):
                 print("Error Adding " + symbol + " technical data to database.")
                 print(e)
         else:
-            sql = f"""
-                UPDATE technical SET sma = {sma},
-                ema = {ema},
-                macd = {macd},
-                macd_signal = {macd_signal},
-                macd_hist = {macd_hist},
-                stoch_slow_d = {stoch_slowd},
-                stoch_slow_k = {stoch_slowk},
-                rsi = {rsi},
-                stochrsi_fast_k = {stochrsi_fastk},
-                stochrsi_fast_d = {stochrsi_fastd},
-                willr = {willr},
-                roc = {roc},
-                rocr = {rocr},
-                bbands_lower = {bbands_lower},
-                bbands_upper = {bbands_upper},
-                bbands_middle = {bbands_middle}
-                WHERE security_id = {uuid} AND date = '{sql_date}';
-                """
-            try:
-                cursor.execute(sql)
-                db.commit()
-                print("Updating " + symbol + " technical data in database.")
-            except Exception as e:
-                print("Error updating " + symbol + " technical data in database.")
-                print(e)
+            print(symbol + " already in technical data in database for " + data_date + ".")
 
     except Exception as e:
         print(e)
