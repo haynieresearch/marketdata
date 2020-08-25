@@ -321,7 +321,7 @@ def update(date):
             uuid = row[0]
             symbol = row[1]
             update_overview(uuid, symbol, date)
-            time.sleep(1)
+            #time.sleep(1)
 
     except Exception as e:
         print(e)
@@ -337,7 +337,7 @@ def update_segment(segment,date):
             uuid = row[0]
             symbol = row[1]
             update_overview(uuid, symbol, date)
-            time.sleep(1)
+            #time.sleep(1)
 
     except Exception as e:
         print(e)

@@ -89,7 +89,7 @@ if len(args) > 1:
     elif arg1.lower() == "--overview":
         if len(sys.argv) == 2:
             import marketdata.overview
-            marketdata.daily.overview(now)
+            marketdata.overview.update(now)
         elif len(sys.argv) > 2:
             if arg2.lower() == "--segment":
                 if len(sys.argv) > 3:
