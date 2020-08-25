@@ -21,6 +21,7 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
+import sys
 import urllib.request as urlreq
 import json
 from re import search
@@ -31,7 +32,7 @@ from .functions import numtest
 api_base = settings_data['datasources']['AlphaVantage']['url']
 api_key = settings_data['datasources']['AlphaVantage']['key']
 
-def update_overview(uuid,symbol,date):
+def overview(uuid,symbol,date):
     cursor = db.cursor()
     try:
         cursor.execute(f"select security_id from overview where security_id = {uuid}")
@@ -308,7 +309,7 @@ def update(date):
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            update_overview(uuid, symbol, date)
+            overview(uuid, symbol, date)
             #time.sleep(1)
 
     except Exception as e:
@@ -325,7 +326,7 @@ def update_segment(segment,date):
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            update_overview(uuid, symbol, date)
+            overview(uuid, symbol, date)
             #time.sleep(1)
 
     except Exception as e:

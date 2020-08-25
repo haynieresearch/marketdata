@@ -30,6 +30,6 @@ def numtest(var_input):
     else:
         try:
             var_input = float(var_input)
-        except:
+        except Exception as e:
             var_input = 0
     return var_input

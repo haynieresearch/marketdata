@@ -45,14 +45,14 @@ def price(uuid,symbol,date):
             response_data = json.loads(urlreq.urlopen(api).read().decode('utf-8'))
             response_data = response_data['Time Series (Daily)'][date]
 
-            open        = numtest(response_data['1. open'])
-            high        = numtest(response_data['2. high'])
-            low         = numtest(response_data['3. low'])
-            close       = numtest(response_data['4. close'])
-            adj_close   = numtest(response_data['5. adjusted close'])
-            volume      = numtest(response_data['6. volume'])
-            div_amt     = numtest(response_data['7. dividend amount'])
-            split_c     = numtest(response_data['8. split coefficient'])
+            dailyOpen        = numtest(response_data['1. open'])
+            dailyHigh        = numtest(response_data['2. high'])
+            dailyLow         = numtest(response_data['3. low'])
+            dailyClose       = numtest(response_data['4. close'])
+            dailyAdjClose    = numtest(response_data['5. adjusted close'])
+            dailyVolume      = numtest(response_data['6. volume'])
+            dailyDivAmt      = numtest(response_data['7. dividend amount'])
+            dailySplit_c     = numtest(response_data['8. split coefficient'])
 
             sql = f"""
                 INSERT INTO
@@ -70,14 +70,14 @@ def price(uuid,symbol,date):
                 values(
                     {uuid},
                     '{sql_date}',
-                    {open},
-                    {high},
-                    {low},
-                    {close},
-                    {adj_close},
-                    {volume},
-                    {div_amt},
-                    {split_c});
+                    {dailyOpen},
+                    {dailyHigh},
+                    {dailyLow},
+                    {dailyClose},
+                    {dailyAdjClose},
+                    {dailyVolume},
+                    {dailyDivAmt},
+                    {dailySplit_c});
                 """
             try:
                 cursor.execute(sql)
