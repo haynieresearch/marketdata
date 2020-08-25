@@ -26,7 +26,7 @@ import urllib.request as urlreq
 import json
 from .settings import settings_data
 from .database import db
-from .functions
+from .functions import numtest
 
 api_base = settings_data['datasources']['AlphaVantage']['url']
 api_key = settings_data['datasources']['AlphaVantage']['key']
@@ -45,14 +45,14 @@ def price(uuid,symbol,date):
             response_data = json.loads(urlreq.urlopen(api).read().decode('utf-8'))
             response_data = response_data['Time Series (Daily)'][date]
 
-            open        = functions.numtest(response_data['1. open'])
-            high        = functions.numtest(response_data['2. high'])
-            low         = functions.numtest(response_data['3. low'])
-            close       = functions.numtest(response_data['4. close'])
-            adj_close   = functions.numtest(response_data['5. adjusted close'])
-            volume      = functions.numtest(response_data['6. volume'])
-            div_amt     = functions.numtest(response_data['7. dividend amount'])
-            split_c     = functions.numtest(response_data['8. split coefficient'])
+            open        = numtest(response_data['1. open'])
+            high        = numtest(response_data['2. high'])
+            low         = numtest(response_data['3. low'])
+            close       = numtest(response_data['4. close'])
+            adj_close   = numtest(response_data['5. adjusted close'])
+            volume      = numtest(response_data['6. volume'])
+            div_amt     = numtest(response_data['7. dividend amount'])
+            split_c     = numtest(response_data['8. split coefficient'])
 
             sql = f"""
                 INSERT INTO
@@ -122,22 +122,22 @@ def technical(uuid,symbol,date):
 
         if response == None:
             try:
-                sma = functions.numtest(get_tech("SMA",symbol,api_key,api_base,data_date)["SMA"])
-                ema = functions.numtest(get_tech("EMA",symbol,api_key,api_base,data_date)["EMA"])
-                macd = functions.numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD"])
-                macd_hist = functions.numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Hist"])
-                macd_signal = functions.numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Signal"])
-                stoch_slowk = functions.numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowK"])
-                stoch_slowd = functions.numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowD"])
-                rsi = functions.numtest(get_tech("RSI",symbol,api_key,api_base,data_date)["RSI"])
-                stochrsi_fastk = functions.numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastK"])
-                stochrsi_fastd = functions.numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastD"])
-                willr = functions.numtest(get_tech("WILLR",symbol,api_key,api_base,data_date)["WILLR"])
-                bbands_upper = functions.numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Upper Band"])
-                bbands_lower = functions.numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Lower Band"])
-                bbands_middle = functions.numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Middle Band"])
-                roc = functions.numtest(get_tech("ROC",symbol,api_key,api_base,data_date)["ROC"])
-                rocr = functions.numtest(get_tech("ROCR",symbol,api_key,api_base,data_date)["ROCR"])
+                sma = numtest(get_tech("SMA",symbol,api_key,api_base,data_date)["SMA"])
+                ema = numtest(get_tech("EMA",symbol,api_key,api_base,data_date)["EMA"])
+                macd = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD"])
+                macd_hist = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Hist"])
+                macd_signal = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Signal"])
+                stoch_slowk = numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowK"])
+                stoch_slowd = numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowD"])
+                rsi = numtest(get_tech("RSI",symbol,api_key,api_base,data_date)["RSI"])
+                stochrsi_fastk = numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastK"])
+                stochrsi_fastd = numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastD"])
+                willr = numtest(get_tech("WILLR",symbol,api_key,api_base,data_date)["WILLR"])
+                bbands_upper = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Upper Band"])
+                bbands_lower = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Lower Band"])
+                bbands_middle = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Middle Band"])
+                roc = numtest(get_tech("ROC",symbol,api_key,api_base,data_date)["ROC"])
+                rocr = numtest(get_tech("ROCR",symbol,api_key,api_base,data_date)["ROCR"])
             except Exception as e:
                 print("Error assigning variables.")
                 print('Error: {}'.format(str(e)))

@@ -31,4 +31,4 @@ if not os.path.exists(settings_file):
     sys.exit()
 
 with open(settings_file, "r") as f:
-    settings_data = yaml.safe_load(f, Loader=yaml.FullLoader)
+    settings_data = yaml.load(f, Loader=yaml.FullLoader)
