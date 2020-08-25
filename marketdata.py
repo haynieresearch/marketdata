@@ -26,7 +26,7 @@ import sys
 from datetime import date
 
 now = date.today().strftime("%Y-%m-%d")
-now = "2020-08-03"
+now = "2020-08-04"
 
 if len(sys.argv) == 1:
     args = sys.argv
