@@ -26,7 +26,6 @@ import sys
 from datetime import date
 
 now = date.today().strftime("%Y-%m-%d")
-now = "2020-08-04"
 
 if len(sys.argv) == 1:
     args = sys.argv
@@ -78,6 +77,15 @@ if len(args) > 1:
         else:
             print("Error: other error.")
 
+    elif arg1.lower() == "--history":
+        if len(sys.argv) == 2:
+            print("Error: you must enter a date in yyyy-mm-dd format.")
+        elif len(sys.argv) > 2:
+            import marketdata.daily
+            marketdata.daily.update(arg2.lower())
+        else:
+            print("Error: other error.")
+
     elif arg1.lower() == "--overview":
         if len(sys.argv) == 2:
             import marketdata.overview
@@ -93,15 +101,6 @@ if len(args) > 1:
                 print("Error: invalid option.")
         else:
             print("Error: other error.")
-
-    elif arg1.lower() == "--update":
-        if len(arg2) > 1:
-            import marketdata.daily
-            marketdata.daily.update(arg2)
-            import marketdata.technical
-            marketdata.technical.update(arg2)
-        else:
-            print("Error: you did not input a date.")
 
     elif arg1.lower() == "--check_config":
         print("Just making sure everything works!")
