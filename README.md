@@ -13,6 +13,13 @@ You will need to rename example.settings.yaml to settings.yaml and update with y
 
 Note: This is intended to run daily/weekly/monthly after market close as soon as end of day data is available. You can also modify timedelta(days = 0) to -1 to run the next day on a lag or to make up missed dates. Eventually arguments will be added to update specific dates in the event a normal run failed. We will also build in the ability to automate a single program that will identify if the ETL process should run, and if it is a normal daily process, a end of week process, or end of month process. The idea behind this schedule is that price and technical data will be updated daily, security fundamental data will be updated weekly, and the list of symbols will be updated monthly. This will also allow the development of weekly and monthly snapshots of the data as more observations are collected.
 
+## USAGE
+./marketdata.py --exchange nyse (update symbol list for NYSE)
+./marketdata.py --exchange nasdaq (update symbol list for NASDAQ)
+./marketdata.py --daily (update daily price and technical data for today's date)
+./marketdata.py --overview (update overview/fundamental data)
+./marketdata.py --history yyyy-mm-dd (update price/technical data for a particular period)
+
 ## GOAL
 The goal of this project is to enable the creation of time series market datasets for statistical and quantitative analysis, as well as model development. Currently, there are many datasets that exist for historical price data (open, high, low, close), but none that include technical and fundamental data as well in the same observation.
 
