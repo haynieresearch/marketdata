@@ -1,4 +1,4 @@
-"""MARKET DATA ETL"""
+"""MARKETDATA."""
 #!/usr/local/bin/python3.8
 #**********************************************************
 #* CATEGORY	SOFTWARE
