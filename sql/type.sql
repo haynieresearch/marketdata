@@ -1,5 +1,0 @@
-CREATE TABLE `type` (
-  `uuid` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(50) NOT NULL,
-  PRIMARY KEY (`uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1
