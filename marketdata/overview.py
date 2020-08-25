@@ -26,7 +26,7 @@ import json
 from re import search
 from .settings import settings_data
 from .database import db
-from .functions import numtest
+from .functions
 
 api_base = settings_data['datasources']['AlphaVantage']['url']
 api_key = settings_data['datasources']['AlphaVantage']['key']
