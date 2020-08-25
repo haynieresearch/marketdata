@@ -24,7 +24,6 @@
 import os
 import sys
 import yaml
-from . import *
 
 settings_file = "./marketdata/settings.yaml"
 if not os.path.exists(settings_file):
