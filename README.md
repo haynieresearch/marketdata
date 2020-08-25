@@ -9,7 +9,7 @@ This program is designed to extract data from a stock market API (currently [Alp
 
 This project is still in the early development phase and we will update this document accordingly as required.
 
-# INSTALL
+## INSTALL
 pip3 install -r requirements.txt\
 rename example.settings.yaml to settings.yaml and update with your credentials\
 load sql files into your MySQL database\

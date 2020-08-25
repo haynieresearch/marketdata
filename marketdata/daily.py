@@ -103,7 +103,7 @@ def price(uuid,symbol,date):
     except Exception as e:
         print("Error! " + symbol)
         print(e)
-    time.sleep(1)
+    #time.sleep(1)
 
 def get_tech(ind,symbol,api_key,base,date):
     try:
@@ -119,7 +119,7 @@ def get_tech(ind,symbol,api_key,base,date):
     except Exception as e:
         print("Error assigning API variable.")
         print(e)
-    time.sleep(1)
+    #time.sleep(1)
     return data
 
 def technical(uuid,symbol,date):
