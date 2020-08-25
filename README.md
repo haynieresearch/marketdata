@@ -9,9 +9,10 @@ This program is designed to extract data from a stock market API (currently [Alp
 
 This project is still in the early development phase and we will update this document accordingly as required.
 
-You will need to rename example.settings.yaml to settings.yaml and update with your credentials.
-
-Note: This is intended to run daily/weekly/monthly after market close as soon as end of day data is available. You can also modify timedelta(days = 0) to -1 to run the next day on a lag or to make up missed dates. Eventually arguments will be added to update specific dates in the event a normal run failed. We will also build in the ability to automate a single program that will identify if the ETL process should run, and if it is a normal daily process, a end of week process, or end of month process. The idea behind this schedule is that price and technical data will be updated daily, security fundamental data will be updated weekly, and the list of symbols will be updated monthly. This will also allow the development of weekly and monthly snapshots of the data as more observations are collected.
+# INSTALL
+pip3 install -r requirements.txt\
+rename example.settings.yaml to settings.yaml and update with your credentials\
+load sql files into your MySQL database\
 
 ## USAGE
 ./marketdata.py --exchange nyse (update symbol list for NYSE)\
