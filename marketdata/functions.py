@@ -31,5 +31,6 @@ def numtest(var_input):
         try:
             var_input = float(var_input)
         except Exception as e:
+            print('Error: {}'.format(str(e)))
             var_input = 0
     return var_input
