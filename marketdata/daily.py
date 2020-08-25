@@ -50,21 +50,21 @@ def price(uuid,symbol,date):
         cursor.execute(f"select security_id from price where security_id = {uuid} AND date = '{sql_date}'")
         response = cursor.fetchone()
 
-        api = f"{api_base}TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&apikey={api_key}"
-
-        response_data = json.loads(urlreq.urlopen(api).read().decode('utf-8'))
-        response_data = response_data['Time Series (Daily)'][date]
-
-        open        = numtest(response_data['1. open'])
-        high        = numtest(response_data['2. high'])
-        low         = numtest(response_data['3. low'])
-        close       = numtest(response_data['4. close'])
-        adj_close   = numtest(response_data['5. adjusted close'])
-        volume      = numtest(response_data['6. volume'])
-        div_amt     = numtest(response_data['7. dividend amount'])
-        split_c     = numtest(response_data['8. split coefficient'])
-
         if response == None:
+            api = f"{api_base}TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&apikey={api_key}"
+
+            response_data = json.loads(urlreq.urlopen(api).read().decode('utf-8'))
+            response_data = response_data['Time Series (Daily)'][date]
+
+            open        = numtest(response_data['1. open'])
+            high        = numtest(response_data['2. high'])
+            low         = numtest(response_data['3. low'])
+            close       = numtest(response_data['4. close'])
+            adj_close   = numtest(response_data['5. adjusted close'])
+            volume      = numtest(response_data['6. volume'])
+            div_amt     = numtest(response_data['7. dividend amount'])
+            split_c     = numtest(response_data['8. split coefficient'])
+
             sql = f"""
                 INSERT INTO
                 price (
@@ -102,7 +102,7 @@ def price(uuid,symbol,date):
 
     except Exception as e:
         print("Error! " + symbol)
-        print(e)
+        print('Error: {}'.format(str(e)))
     #time.sleep(1)
 
 def get_tech(ind,symbol,api_key,base,date):
@@ -111,14 +111,14 @@ def get_tech(ind,symbol,api_key,base,date):
         data = json.loads(urlreq.urlopen(api).read().decode())
     except Exception as e:
         print("Error with API call.")
-        print(e)
+        print('Error: {}'.format(str(e)))
 
     try:
         json_txt = f"Technical Analysis: {ind}"
         data = data[json_txt][date]
     except Exception as e:
         print("Error assigning API variable.")
-        print(e)
+        print('Error: {}'.format(str(e)))
     #time.sleep(1)
     return data
 
@@ -131,28 +131,28 @@ def technical(uuid,symbol,date):
         cursor.execute(f"select security_id from technical where security_id = {uuid} AND date = '{sql_date}'")
         response = cursor.fetchone()
 
-        try:
-            sma = numtest(get_tech("SMA",symbol,api_key,api_base,data_date)["SMA"])
-            ema = numtest(get_tech("EMA",symbol,api_key,api_base,data_date)["EMA"])
-            macd = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD"])
-            macd_hist = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Hist"])
-            macd_signal = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Signal"])
-            stoch_slowk = numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowK"])
-            stoch_slowd = numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowD"])
-            rsi = numtest(get_tech("RSI",symbol,api_key,api_base,data_date)["RSI"])
-            stochrsi_fastk = numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastK"])
-            stochrsi_fastd = numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastD"])
-            willr = numtest(get_tech("WILLR",symbol,api_key,api_base,data_date)["WILLR"])
-            bbands_upper = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Upper Band"])
-            bbands_lower = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Lower Band"])
-            bbands_middle = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Middle Band"])
-            roc = numtest(get_tech("ROC",symbol,api_key,api_base,data_date)["ROC"])
-            rocr = numtest(get_tech("ROCR",symbol,api_key,api_base,data_date)["ROCR"])
-        except Exception as e:
-            print("Error assigning variables.")
-            print(e)
-
         if response == None:
+            try:
+                sma = numtest(get_tech("SMA",symbol,api_key,api_base,data_date)["SMA"])
+                ema = numtest(get_tech("EMA",symbol,api_key,api_base,data_date)["EMA"])
+                macd = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD"])
+                macd_hist = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Hist"])
+                macd_signal = numtest(get_tech("MACD",symbol,api_key,api_base,data_date)["MACD_Signal"])
+                stoch_slowk = numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowK"])
+                stoch_slowd = numtest(get_tech("STOCH",symbol,api_key,api_base,data_date)["SlowD"])
+                rsi = numtest(get_tech("RSI",symbol,api_key,api_base,data_date)["RSI"])
+                stochrsi_fastk = numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastK"])
+                stochrsi_fastd = numtest(get_tech("STOCHRSI",symbol,api_key,api_base,data_date)["FastD"])
+                willr = numtest(get_tech("WILLR",symbol,api_key,api_base,data_date)["WILLR"])
+                bbands_upper = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Upper Band"])
+                bbands_lower = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Lower Band"])
+                bbands_middle = numtest(get_tech("BBANDS",symbol,api_key,api_base,data_date)["Real Middle Band"])
+                roc = numtest(get_tech("ROC",symbol,api_key,api_base,data_date)["ROC"])
+                rocr = numtest(get_tech("ROCR",symbol,api_key,api_base,data_date)["ROCR"])
+            except Exception as e:
+                print("Error assigning variables.")
+                print('Error: {}'.format(str(e)))
+
             sql = f"""
                 INSERT INTO
                 technical (
@@ -200,12 +200,12 @@ def technical(uuid,symbol,date):
                 print("Adding " + symbol + " technical data to database for " + data_date + ".")
             except Exception as e:
                 print("Error Adding " + symbol + " technical data to database for " + data_date + ".")
-                print(e)
+                print('Error: {}'.format(str(e)))
         else:
             print(symbol + " already in technical data in database for " + data_date + ".")
 
     except Exception as e:
-        print(e)
+        print('Error: {}'.format(str(e)))
 
 def update(date):
     print("Updating Daily Data")
@@ -220,7 +220,8 @@ def update(date):
             technical(uuid, symbol, date)
 
     except Exception as e:
-        print(e)
+        print('Error: {}'.format(str(e)))
+        sys.exit(1)
     db.close()
 
 def update_segment(segment,date):
@@ -236,5 +237,6 @@ def update_segment(segment,date):
             technical(uuid, symbol, date)
 
     except Exception as e:
-        print(e)
+        print('Error: {}'.format(str(e)))
+        sys.exit(1)
     db.close()

@@ -61,7 +61,7 @@ def update_overview(uuid,symbol,date):
                 print("Error updating " + symbol + ", API responded with error.")
                 return
         except Exception as e:
-            print(e)
+            print('Error: {}'.format(str(e)))
 
         name = data['Name'].replace(',', '')
         country = data['Country']
@@ -243,7 +243,7 @@ def update_overview(uuid,symbol,date):
                 db.commit()
                 print("Adding " + symbol + " to database.")
             except Exception as e:
-                print(e)
+                print('Error: {}'.format(str(e)))
         else:
             sql = f"""
                 UPDATE overview SET name = '{name}',
@@ -307,7 +307,7 @@ def update_overview(uuid,symbol,date):
                 db.commit()
                 print("Updating " + symbol + " in database.")
             except Exception as e:
-                print(e)
+                print('Error: {}'.format(str(e)))
     except Exception as e:
         print(e)
 
@@ -324,7 +324,8 @@ def update(date):
             #time.sleep(1)
 
     except Exception as e:
-        print(e)
+        print('Error: {}'.format(str(e)))
+        sys.exit(1)
     db.close()
 
 def update_segment(segment,date):
@@ -340,5 +341,6 @@ def update_segment(segment,date):
             #time.sleep(1)
 
     except Exception as e:
-        print(e)
+        print('Error: {}'.format(str(e)))
+        sys.exit(1)
     db.close()

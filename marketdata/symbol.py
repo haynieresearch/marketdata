@@ -46,7 +46,7 @@ def update(exchange,exchange_id):
             try:
                 cursor.execute('select symbol from security where symbol = ' + '"' + exchange[index] + '"')
             except Exception as e:
-                print(e)
+                print('Error: {}'.format(str(e)))
             response = cursor.fetchone()
             symbol = exchange[index]
 
@@ -58,7 +58,7 @@ def update(exchange,exchange_id):
                     print("Symbol:" + symbol + " added to database.")
                 except Exception as e:
                     db.rollback()
-                    print(e)
+                    print('Error: {}'.format(str(e)))
             else:
                 sql = f"""
                     UPDATE security SET type_id = 1,
@@ -72,7 +72,8 @@ def update(exchange,exchange_id):
                     print("Updating " + symbol + " in database.")
                 except Exception as e:
                     print("Error updating " + symbol)
-                    print(e)
+                    print('Error: {}'.format(str(e)))
     except Exception as e:
-        print(e)
+        print('Error: {}'.format(str(e)))
+        sys.exit(1)
     db.close()

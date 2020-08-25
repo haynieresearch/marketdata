@@ -2,12 +2,12 @@
 #* CATEGORY	SOFTWARE
 #* GROUP	MARKET DATA
 #* AUTHOR	LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
-#* DATE		2020-08-20
+#* DATE		2020-08-25
 #* PURPOSE	ETL MARKET DATA INTO MYSQL TABLES
-#* FILE		SETTINGS.PY
+#* FILE		CSV2MYSQL.PY
 #**********************************************************
 #* MODIFICATIONS
-#* 2020-08-20 - LHAYNIE - INITIAL VERSION
+#* 2020-08-25 - LHAYNIE - INITIAL VERSION
 #**********************************************************
 #ETL Stock Market Data
 #Copyright 2020 Haynie IPHC, LLC
@@ -21,15 +21,21 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
-import os
+from .settings import settings_data
+from .database import db
+import pandas as pd
 import sys
-import yaml
-from . import *
 
-settings_file = "./marketdata/settings.yaml"
-if not os.path.exists(settings_file):
-    print("settings.yaml not found!")
-    sys.exit()
+def csv2mysql(file,table):
+    sql = f"LOAD DATA LOCAL INFILE '{file}' INTO TABLE {table}\
+     FIELDS TERMINATED BY ',' ENCLOSED BY '"' IGNORE 1 LINES;"
 
-with open(settings_file, "r") as f:
-    settings_data = yaml.safe_load(f, Loader=yaml.FullLoader)
+    try:
+        cursor = db.cursor()
+        cursor.execute(sql)
+        print('Succuessfully loaded the table from input file.')
+        db.close()
+
+    except Exception as e:
+        print('Error: {}'.format(str(e)))
+        sys.exit(1)
