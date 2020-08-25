@@ -93,9 +93,9 @@ def price(uuid,symbol,date):
             try:
                 cursor.execute(sql)
                 db.commit()
-                print("Adding " + symbol + " price data to database.")
+                print("Adding " + symbol + " price data to database for " + data_date + ".")
             except Exception as e:
-                print("Error adding " + symbol)
+                print("Error adding " + symbol + " price data to database for " + data_date + ".")
                 print(e)
         else:
             print(symbol + " already in daily data in database for " + data_date + ".")
@@ -197,9 +197,9 @@ def technical(uuid,symbol,date):
             try:
                 cursor.execute(sql)
                 db.commit()
-                print("Adding " + symbol + " technical data to database.")
+                print("Adding " + symbol + " technical data to database for " + data_date + ".")
             except Exception as e:
-                print("Error Adding " + symbol + " technical data to database.")
+                print("Error Adding " + symbol + " technical data to database for " + data_date + ".")
                 print(e)
         else:
             print(symbol + " already in technical data in database for " + data_date + ".")
