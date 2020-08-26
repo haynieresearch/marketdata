@@ -1,4 +1,5 @@
 *.log
+nohup.out
 bulkload.sh
 test.py
 .DS_Store

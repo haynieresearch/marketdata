@@ -103,10 +103,6 @@ if len(args) > 1:
         else:
             print("Error: other error.")
 
-    elif arg1.lower() == "--exportsas":
-        import marketdata.mysql2sas
-        marketdata.mysql2sas.export()
-
     elif arg1.lower() == "--check_config":
         print("Just making sure everything works!")
 
