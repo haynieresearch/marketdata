@@ -2,3 +2,5 @@ pymysql
 numpy
 pandas
 PyYAML
+xport
+sqlalchemy

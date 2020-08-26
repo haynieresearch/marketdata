@@ -26,6 +26,7 @@ import sys
 from datetime import date
 
 now = date.today().strftime("%Y-%m-%d")
+now = "2020-08-25"
 
 if len(sys.argv) == 1:
     args = sys.argv
@@ -102,8 +103,13 @@ if len(args) > 1:
         else:
             print("Error: other error.")
 
+    elif arg1.lower() == "--exportsas":
+        import marketdata.mysql2sas
+        marketdata.mysql2sas.export()
+
     elif arg1.lower() == "--check_config":
         print("Just making sure everything works!")
+
     else:
         print("Error: invalid option, use --help for options.")
 else:
