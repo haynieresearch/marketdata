@@ -1,3 +1,4 @@
+.bulkload.sh.swp
 *.log
 nohup.out
 bulkload.sh
