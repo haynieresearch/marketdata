@@ -103,6 +103,17 @@ if len(args) > 1:
         else:
             print("Error: other error.")
 
+    elif arg1.lower() == "--export":
+        if len(sys.argv) == 2:
+            print("Error: you must specify which table to export.")
+            exit(0)
+        elif len(sys.argv) == 3:
+            print("Error: you must specify an output folder.")
+            exit(0)
+        else:
+            import marketdata.export
+            marketdata.export.exportcsv(arg2.lower(),arg3.lower())
+
     elif arg1.lower() == "--check_config":
         print("Just making sure everything works!")
 
