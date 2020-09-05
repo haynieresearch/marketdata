@@ -183,11 +183,11 @@ def technical(uuid,symbol):
                         {techbband_upper},
                         {techbband_middle});
                     """
-                    try:
-                        cursor.execute(sql)
-                        db.commit()
-                    except Exception as e:
-                        print('Error: {}'.format(str(e)))
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except Exception as e:
+                    print('Error: {}'.format(str(e)))
             except Exception as e:
                 print('Error: {}'.format(str(e)))
 
@@ -197,7 +197,7 @@ def technical(uuid,symbol):
 def update():
     cursor = db.cursor()
     try:
-        cursor.execute("select uuid, symbol from security limit")
+        cursor.execute("select uuid, symbol from security")
         results = cursor.fetchall()
         for row in results:
             uuid = row[0]
