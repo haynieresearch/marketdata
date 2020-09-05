@@ -35,7 +35,7 @@ api_key = settings_data['datasources']['AlphaVantage']['key']
 def price(uuid,symbol):
     cursor = db.cursor()
     try:
-        api = f"{api_base}TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&apikey={api_key}"
+        api = f"{api_base}TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&outputsize=full&apikey={api_key}"
 
         response_data = json.loads(urlreq.urlopen(api).read().decode('utf-8'))
         response_data = response_data['Time Series (Daily)']
