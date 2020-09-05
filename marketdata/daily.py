@@ -121,8 +121,9 @@ def technical(uuid,symbol):
 
         tech_data = [sma,ema,macd,stoch,rsi,stochrsi,willr,bbands,roc,rocr]
         technical = pd.concat(tech_data)
+        technical = technical.to_json()
 
-        print(technical.transpose())
+        print(technical)
 
     except Exception as e:
         print('Error: {}'.format(str(e)))
