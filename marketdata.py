@@ -23,10 +23,6 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 import sys
-from datetime import date
-
-now = date.today().strftime("%Y-%m-%d")
-now = "2020-08-25"
 
 if len(sys.argv) == 1:
     args = sys.argv
@@ -63,45 +59,12 @@ if len(args) > 1:
             print("Error: unrecognized exchange code.")
 
     elif arg1.lower() == "--daily":
-        if len(sys.argv) == 2:
-            import marketdata.daily
-            marketdata.daily.update(now)
-        elif len(sys.argv) > 2:
-            if arg2.lower() == "--segment":
-                if len(sys.argv) > 3:
-                    import marketdata.daily
-                    marketdata.daily.update_segment(arg3.lower(),now)
-                else:
-                    print("Error: missing segment value.")
-            else:
-                print("Error: invalid option.")
-        else:
-            print("Error: other error.")
-
-    elif arg1.lower() == "--history":
-        if len(sys.argv) == 2:
-            print("Error: you must enter a date in yyyy-mm-dd format.")
-        elif len(sys.argv) > 2:
-            import marketdata.daily
-            marketdata.daily.update(arg2.lower())
-        else:
-            print("Error: other error.")
+        import marketdata.daily
+        marketdata.daily.update()
 
     elif arg1.lower() == "--overview":
-        if len(sys.argv) == 2:
-            import marketdata.overview
-            marketdata.overview.update(now)
-        elif len(sys.argv) > 2:
-            if arg2.lower() == "--segment":
-                if len(sys.argv) > 3:
-                    import marketdata.overview
-                    marketdata.overview.update_segment(arg3.lower(),now)
-                else:
-                    print("Error: missing segment value.")
-            else:
-                print("Error: invalid option.")
-        else:
-            print("Error: other error.")
+        import marketdata.overview
+        marketdata.overview.update()
 
     elif arg1.lower() == "--export":
         if len(sys.argv) == 2:

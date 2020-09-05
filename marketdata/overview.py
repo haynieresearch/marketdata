@@ -32,7 +32,7 @@ from .functions import numtest
 api_base = settings_data['datasources']['AlphaVantage']['url']
 api_key = settings_data['datasources']['AlphaVantage']['key']
 
-def overview(uuid,symbol,date):
+def overview(uuid,symbol):
     cursor = db.cursor()
     try:
         cursor.execute(f"select security_id from overview where security_id = {uuid}")
@@ -300,8 +300,7 @@ def overview(uuid,symbol,date):
     except Exception as e:
         print(e)
 
-def update(date):
-    print("Updating Overview Data")
+def update():
     cursor = db.cursor()
     try:
         cursor.execute("select uuid, symbol from security")
@@ -309,25 +308,7 @@ def update(date):
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            overview(uuid, symbol, date)
-            #time.sleep(1)
-
-    except Exception as e:
-        print('Error: {}'.format(str(e)))
-        sys.exit(1)
-    db.close()
-
-def update_segment(segment,date):
-    print("Updating Overview Data")
-    cursor = db.cursor()
-    try:
-        cursor.execute(f"select uuid, symbol from security_segment where segment = '{segment}'")
-        results = cursor.fetchall()
-        for row in results:
-            uuid = row[0]
-            symbol = row[1]
-            overview(uuid, symbol, date)
-            #time.sleep(1)
+            overview(uuid, symbol)
 
     except Exception as e:
         print('Error: {}'.format(str(e)))

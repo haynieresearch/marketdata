@@ -88,7 +88,6 @@ def price(uuid,symbol):
 
     except Exception as e:
         print('Error: {}'.format(str(e)))
-    #time.sleep(1)
 
 def get_tech(ind,symbol,api_key,base):
     try:
@@ -121,23 +120,86 @@ def technical(uuid,symbol):
 
         tech_data = [sma,ema,macd,stoch,rsi,stochrsi,willr,bbands,roc,rocr]
         technical = pd.concat(tech_data)
-        technical = technical.to_json()
+        technical = json.loads(technical.to_json())
 
-        print(technical)
+        for key,value in technical.items():
+            techdate = key + " 00:00:00"
+            techsma = numtest(value['SMA'])
+            techema = numtest(value['EMA'])
+            techmacd = numtest(value['MACD'])
+            techmacd_hist = numtest(value['MACD_Hist'])
+            techmacd_signal = numtest(value['MACD_Signal'])
+            techslowk = numtest(value['SlowK'])
+            techslowd = numtest(value['SlowD'])
+            techrsi = numtest(value['RSI'])
+            techfastd = numtest(value['FastD'])
+            techfastk = numtest(value['FastK'])
+            techwillr = numtest(value['WILLR'])
+            techbband_upper = numtest(value['Real Upper Band'])
+            techbband_middle = numtest(value['Real Middle Band'])
+            techbband_lower = numtest(value['Real Lower Band'])
+            techroc = numtest(value['ROC'])
+            techrocr = numtest(value['ROCR'])
+
+            sql = f"""
+                INSERT INTO
+                technical (
+                    security_id,
+                    date,
+                    sma,
+                    ema,
+                    macd,
+                    macd_signal,
+                    macd_hist,
+                    stoch_slow_d,
+                    stoch_slow_k,
+                    rsi,
+                    stochrsi_fast_k,
+                    stochrsi_fast_d,
+                    willr,
+                    roc,
+                    rocr,
+                    bbands_lower,
+                    bbands_upper,
+                    bbands_middle)
+                values(
+                    {uuid},
+                    '{techdate}',
+                    {techsma},
+                    {techema},
+                    {techmacd},
+                    {techmacd_signal},
+                    {techmacd_hist},
+                    {techslowd},
+                    {techslowk},
+                    {techrsi},
+                    {techfastk},
+                    {techfastd},
+                    {techwillr},
+                    {techroc},
+                    {techrocr},
+                    {techbband_lower},
+                    {techbband_upper},
+                    {techbband_middle});
+                """
+            try:
+                cursor.execute(sql)
+                db.commit()
+            except Exception as e:
+                print('Error: {}'.format(str(e)))
 
     except Exception as e:
         print('Error: {}'.format(str(e)))
 
-def update(date):
-    print("Updating Daily Data")
+def update():
     cursor = db.cursor()
     try:
-        cursor.execute("select uuid, symbol from security limit 1")
+        cursor.execute("select uuid, symbol from security limit")
         results = cursor.fetchall()
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            #price(uuid, symbol)
+            price(uuid, symbol)
             technical(uuid, symbol)
 
     except Exception as e:
