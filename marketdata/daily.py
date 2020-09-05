@@ -142,52 +142,52 @@ def technical(uuid,symbol):
             techrocr = numtest(value['ROCR'])
 
             try:
-            sql = f"""
-                INSERT INTO
-                technical (
-                    security_id,
-                    date,
-                    sma,
-                    ema,
-                    macd,
-                    macd_signal,
-                    macd_hist,
-                    stoch_slow_d,
-                    stoch_slow_k,
-                    rsi,
-                    stochrsi_fast_k,
-                    stochrsi_fast_d,
-                    willr,
-                    roc,
-                    rocr,
-                    bbands_lower,
-                    bbands_upper,
-                    bbands_middle)
-                values(
-                    {uuid},
-                    '{techdate}',
-                    {techsma},
-                    {techema},
-                    {techmacd},
-                    {techmacd_signal},
-                    {techmacd_hist},
-                    {techslowd},
-                    {techslowk},
-                    {techrsi},
-                    {techfastk},
-                    {techfastd},
-                    {techwillr},
-                    {techroc},
-                    {techrocr},
-                    {techbband_lower},
-                    {techbband_upper},
-                    {techbband_middle});
-                """
-                try:
-                    cursor.execute(sql)
-                    db.commit()
-                except Exception as e:
-                    print('Error: {}'.format(str(e)))
+                sql = f"""
+                    INSERT INTO
+                    technical (
+                        security_id,
+                        date,
+                        sma,
+                        ema,
+                        macd,
+                        macd_signal,
+                        macd_hist,
+                        stoch_slow_d,
+                        stoch_slow_k,
+                        rsi,
+                        stochrsi_fast_k,
+                        stochrsi_fast_d,
+                        willr,
+                        roc,
+                        rocr,
+                        bbands_lower,
+                        bbands_upper,
+                        bbands_middle)
+                    values(
+                        {uuid},
+                        '{techdate}',
+                        {techsma},
+                        {techema},
+                        {techmacd},
+                        {techmacd_signal},
+                        {techmacd_hist},
+                        {techslowd},
+                        {techslowk},
+                        {techrsi},
+                        {techfastk},
+                        {techfastd},
+                        {techwillr},
+                        {techroc},
+                        {techrocr},
+                        {techbband_lower},
+                        {techbband_upper},
+                        {techbband_middle});
+                    """
+                    try:
+                        cursor.execute(sql)
+                        db.commit()
+                    except Exception as e:
+                        print('Error: {}'.format(str(e)))
             except Exception as e:
                 print('Error: {}'.format(str(e)))
 
