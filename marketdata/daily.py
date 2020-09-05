@@ -141,6 +141,7 @@ def technical(uuid,symbol):
             techroc = numtest(value['ROC'])
             techrocr = numtest(value['ROCR'])
 
+            try:
             sql = f"""
                 INSERT INTO
                 technical (
@@ -182,9 +183,11 @@ def technical(uuid,symbol):
                     {techbband_upper},
                     {techbband_middle});
                 """
-            try:
-                cursor.execute(sql)
-                db.commit()
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except Exception as e:
+                    print('Error: {}'.format(str(e)))
             except Exception as e:
                 print('Error: {}'.format(str(e)))
 
