@@ -122,7 +122,7 @@ def technical(uuid,symbol):
         tech_data = [sma,ema,macd,stoch,rsi,stochrsi,willr,bbands,roc,rocr]
         technical = pd.concat(tech_data)
 
-        print(technical)
+        print(technical.transpose())
 
     except Exception as e:
         print('Error: {}'.format(str(e)))
