@@ -108,24 +108,21 @@ def technical(uuid,symbol):
     cursor = db.cursor()
 
     try:
-        sma = get_tech("SMA",symbol,api_key,api_base)
-        macd_hist = get_tech("MACD",symbol,api_key,api_base)
-        print(macd_hist)
-        #ema = get_tech("EMA",symbol,api_key,api_base)
-        #macd = numtest(get_tech("MACD",symbol,api_key,api_base)["MACD"])
-        #macd_hist = numtest(get_tech("MACD",symbol,api_key,api_base)["MACD_Hist"])
-        #macd_signal = numtest(get_tech("MACD",symbol,api_key,api_base)["MACD_Signal"])
-        #stoch_slowk = numtest(get_tech("STOCH",symbol,api_key,api_base)["SlowK"])
-        #stoch_slowd = numtest(get_tech("STOCH",symbol,api_key,api_base)["SlowD"])
-        #rsi = numtest(get_tech("RSI",symbol,api_key,api_base,data_date)["RSI"])
-        #stochrsi_fastk = numtest(get_tech("STOCHRSI",symbol,api_key,api_base)["FastK"])
-        #stochrsi_fastd = numtest(get_tech("STOCHRSI",symbol,api_key,api_base)["FastD"])
-        #willr = numtest(get_tech("WILLR",symbol,api_key,api_base,data_date)["WILLR"])
-        #bbands_upper = numtest(get_tech("BBANDS",symbol,api_key,api_base)["Real Upper Band"])
-        #bbands_lower = numtest(get_tech("BBANDS",symbol,api_key,api_base)["Real Lower Band"])
-        #bbands_middle = numtest(get_tech("BBANDS",symbol,api_key,api_base)["Real Middle Band"])
-        #roc = numtest(get_tech("ROC",symbol,api_key,api_base)["ROC"])
-        #rocr = numtest(get_tech("ROCR",symbol,api_key,api_base)["ROCR"])
+        sma = pd.DataFrame.from_dict(get_tech("SMA",symbol,api_key,api_base))
+        ema = pd.DataFrame.from_dict(get_tech("EMA",symbol,api_key,api_base))
+        macd = pd.DataFrame.from_dict(get_tech("MACD",symbol,api_key,api_base))
+        stoch = pd.DataFrame.from_dict(get_tech("STOCH",symbol,api_key,api_base))
+        rsi = pd.DataFrame.from_dict(get_tech("RSI",symbol,api_key,api_base))
+        stochrsi = pd.DataFrame.from_dict(get_tech("STOCHRSI",symbol,api_key,api_base))
+        willr = pd.DataFrame.from_dict(get_tech("WILLR",symbol,api_key,api_base))
+        bbands = pd.DataFrame.from_dict(get_tech("BBANDS",symbol,api_key,api_base))
+        roc = pd.DataFrame.from_dict(get_tech("ROC",symbol,api_key,api_base))
+        rocr = pd.DataFrame.from_dict(get_tech("ROCR",symbol,api_key,api_base))
+
+        tech_data = [sma,ema,macd,stoch,rsi,stochrsi,willr,bbands,roc,rocr]
+        technical = pd.concat(tech_data)
+
+        print(technical)
 
     except Exception as e:
         print('Error: {}'.format(str(e)))
@@ -134,13 +131,13 @@ def update(date):
     print("Updating Daily Data")
     cursor = db.cursor()
     try:
-        cursor.execute("select uuid, symbol from security")
+        cursor.execute("select uuid, symbol from security limit 1")
         results = cursor.fetchall()
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            price(uuid, symbol)
-            #technical(uuid, symbol)
+            #price(uuid, symbol)
+            technical(uuid, symbol)
 
     except Exception as e:
         print('Error: {}'.format(str(e)))
