@@ -1,4 +1,4 @@
-# ETL Stock Data [![Build Status](https://travis-ci.com/haynieresearch/stock-data.svg?branch=master)](https://travis-ci.com/haynieresearch/stock-data) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/729efafdf51b47adab28e5d5a83ae067)](https://app.codacy.com/gh/haynieresearch/stock-data?utm_source=github.com&utm_medium=referral&utm_content=haynieresearch/stock-data&utm_campaign=Badge_Grade_Dashboard)
+# Market Data [![Build Status](https://travis-ci.com/haynieresearch/stock-data.svg?branch=master)](https://travis-ci.com/haynieresearch/stock-data) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/729efafdf51b47adab28e5d5a83ae067)](https://app.codacy.com/gh/haynieresearch/stock-data?utm_source=github.com&utm_medium=referral&utm_content=haynieresearch/stock-data&utm_campaign=Badge_Grade_Dashboard)
 This program is designed to extract data from a stock market API (currently [AlphaVantage](http://www.alphavantage.co)) and store it into a MySQL database.
 
 ## REQUIREMENTS
@@ -17,9 +17,8 @@ load sql files into your MySQL database\
 ## USAGE
 ./marketdata.py --exchange nyse (update symbol list for NYSE)\
 ./marketdata.py --exchange nasdaq (update symbol list for NASDAQ)\
-./marketdata.py --daily (update daily price and technical data for today's date)\
+./marketdata.py --daily (update daily price and technical data)\
 ./marketdata.py --overview (update overview/fundamental data)\
-./marketdata.py --history yyyy-mm-dd (update price/technical data for a particular period)\
 
 ## GOAL
 The goal of this project is to enable the creation of time series market datasets for statistical and quantitative analysis, as well as model development. Currently, there are many datasets that exist for historical price data (open, high, low, close), but none that include technical and fundamental data as well in the same observation.
