@@ -8,6 +8,7 @@
 #**********************************************************
 #* MODIFICATIONS
 #* 2020-08-20 - LHAYNIE - INITIAL VERSION
+#* 2020-09-05 - LHAYNIE - ADDED ENTRY FOR DATAWAREHOUSE
 #**********************************************************
 #ETL Stock Market Data
 #Copyright 2020 Haynie IPHC, LLC
@@ -30,4 +31,13 @@ db_info['password'] = settings_data['databases']['marketdata']['password']
 db_info['host'] = settings_data['databases']['marketdata']['host']
 db_info['schema'] = settings_data['databases']['marketdata']['schema']
 
+dw_info = {}
+dw_info['user'] = settings_data['databases']['marketdw']['user']
+dw_info['password'] = settings_data['databases']['marketdw']['password']
+dw_info['host'] = settings_data['databases']['marketdw']['host']
+dw_info['schema'] = settings_data['databases']['marketdw']['schema']
+
+
 db = pymysql.connect(db_info['host'],db_info['user'],db_info['password'],db_info['schema'])
+dw = pymysql.connect(dw_info['host'],dw_info['user'],dw_info['password'],dw_info['schema'])
+

@@ -139,7 +139,7 @@ def technical(uuid,symbol):
         print('Error: {}'.format(str(e)))
 
 def update():
-    cursor = db.cursor()
+    cursor = dw.cursor()
     try:
         cursor.execute("select uuid, symbol from security")
         results = cursor.fetchall()
@@ -151,4 +151,4 @@ def update():
     except Exception as e:
         print('Error: {}'.format(str(e)))
         sys.exit(1)
-    db.close()
+    dw.close()

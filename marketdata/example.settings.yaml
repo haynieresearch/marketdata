@@ -4,6 +4,11 @@ databases:
         user: ""
         password: ""
         host: ""
+    marketdw:
+        schema: ""
+        user: ""
+        password: ""
+        host: ""
 datasources:
     AlphaVantage:
         key: ""

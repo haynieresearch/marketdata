@@ -31,14 +31,14 @@ def exportcsv(table,location):
     sql = f"SELECT * from {table}"
     outFile = f"{location}{table}.csv"
 
-    cursor = db.cursor()
+    cursor = dw.cursor()
 
     try:
         cursor.execute(sql)
         rows = cursor.fetchall()
     except Exception as e:
         print('Error: {}'.format(str(e)))
-        db.close()
+        dw.close()
 
     if rows:
         Path(f"{outFile}").touch()
