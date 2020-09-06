@@ -17,8 +17,9 @@ load sql files into your MySQL database\
 ## USAGE
 ./marketdata.py --exchange nyse (update symbol list for NYSE)\
 ./marketdata.py --exchange nasdaq (update symbol list for NASDAQ)\
-./marketdata.py --daily (update daily price and technical data)\
-./marketdata.py --overview (update overview/fundamental data)\
+./marketdata.py --daily (update daily price data)\
+./marketdata.py --technical (update technical data)\
+./marketdata.py --overview (update overview/fundamental data)
 
 ## GOAL
 The goal of this project is to enable the creation of time series market datasets for statistical and quantitative analysis, as well as model development. Currently, there are many datasets that exist for historical price data (open, high, low, close), but none that include technical and fundamental data as well in the same observation.
