@@ -62,6 +62,10 @@ if len(args) > 1:
         import marketdata.daily
         marketdata.daily.update()
 
+    elif arg1.lower() == "--technical":
+        import marketdata.technical
+        marketdata.technical.update()
+
     elif arg1.lower() == "--overview":
         import marketdata.overview
         marketdata.overview.update()
