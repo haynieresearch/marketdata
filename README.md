@@ -24,7 +24,7 @@ marketdata.py --exchange nyse (update symbol list for NYSE)\
 marketdata.py --exchange nasdaq (update symbol list for NASDAQ)\
 marketdata.py --daily (update daily price data)\
 marketdata.py --technical (update technical data)\
-marketdata.py --overview (update overview/fundamental data)
+marketdata.py --overview (update overview/fundamental data)\
 marketdata.py --export table_name /path/to/save/csv/ (export mysql table as csv)
 
 ## GOAL
