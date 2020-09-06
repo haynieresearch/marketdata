@@ -26,7 +26,7 @@ import urllib.request as urlreq
 import json
 from re import search
 from .settings import settings_data
-from .database import db
+from .database import db,dw
 from .functions import numtest
 
 api_base = settings_data['datasources']['AlphaVantage']['url']
@@ -301,10 +301,10 @@ def overview(uuid,symbol):
         print(e)
 
 def update():
-    cursor = db.cursor()
+    dw_cursor = dw.cursor()
     try:
-        cursor.execute("select uuid, symbol from security")
-        results = cursor.fetchall()
+        dw_cursor.execute("select uuid, symbol from security")
+        results = dw_cursor.fetchall()
         for row in results:
             uuid = row[0]
             symbol = row[1]
@@ -313,4 +313,4 @@ def update():
     except Exception as e:
         print('Error: {}'.format(str(e)))
         sys.exit(1)
-    db.close()
+    dw.close()

@@ -24,7 +24,7 @@
 import csv
 import sys
 from pathlib import Path
-from .database import db
+from .database import dw
 
 def exportcsv(table,location):
 

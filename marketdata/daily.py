@@ -26,7 +26,7 @@ import urllib.request as urlreq
 import json
 import pandas as pd
 from .settings import settings_data
-from .database import db
+from .database import db,dw
 from .functions import numtest
 
 api_base = settings_data['datasources']['AlphaVantage']['url']
@@ -90,10 +90,10 @@ def daily(uuid,symbol):
         print('Error: {}'.format(str(e)))
 
 def update():
-    cursor = dw.cursor()
+    dw_cursor = dw.cursor()
     try:
-        cursor.execute("select uuid, symbol from security")
-        results = cursor.fetchall()
+        dw_cursor.execute("select uuid, symbol from security")
+        results = dw_cursor.fetchall()
         for row in results:
             uuid = row[0]
             symbol = row[1]
