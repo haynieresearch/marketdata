@@ -59,12 +59,36 @@ if len(args) > 1:
             print("Error: unrecognized exchange code.")
 
     elif arg1.lower() == "--daily":
-        import marketdata.daily
-        marketdata.daily.update()
+        if len(sys.argv) == 2:
+            import marketdata.daily
+            marketdata.daily.update()
+        elif len(sys.argv) > 2:
+            if arg2.lower() == "--segment":
+                if len(sys.argv) > 3:
+                    import marketdata.daily
+                    marketdata.daily.update_segment(arg3.lower())
+                else:
+                    print("Error: missing segment value.")
+            else:
+                print("Error: invalid option.")
+        else:
+            print("Error: other error.")
 
     elif arg1.lower() == "--technical":
-        import marketdata.technical
-        marketdata.technical.update()
+        if len(sys.argv) == 2:
+            import marketdata.technical
+            marketdata.technical.update()
+        elif len(sys.argv) > 2:
+            if arg2.lower() == "--segment":
+                if len(sys.argv) > 3:
+                    import marketdata.technical
+                    marketdata.technical.update_segment(arg3.lower())
+                else:
+                    print("Error: missing segment value.")
+            else:
+                print("Error: invalid option.")
+        else:
+            print("Error: other error.")
 
     elif arg1.lower() == "--overview":
         import marketdata.overview

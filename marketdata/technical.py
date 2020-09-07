@@ -152,3 +152,18 @@ def update():
         print('Error: {}'.format(str(e)))
         sys.exit(1)
     dw.close()
+
+def update_segment(segment):
+    dw_cursor = dw.cursor()
+    try:
+        dw_cursor.execute(f"select uuid, symbol from security_segment where segment = '{segment}'")
+        results = dw_cursor.fetchall()
+        for row in results:
+            uuid = row[0]
+            symbol = row[1]
+            technical(uuid, symbol)
+
+    except Exception as e:
+        print('Error: {}'.format(str(e)))
+        sys.exit(1)
+    dw.close()
