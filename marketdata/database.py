@@ -23,6 +23,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 import pymysql
+from sqlalchemy import create_engine
 from .settings import settings_data
 
 db_info = {}
@@ -40,4 +41,4 @@ dw_info['schema'] = settings_data['databases']['marketdw']['schema']
 
 db = pymysql.connect(db_info['host'],db_info['user'],db_info['password'],db_info['schema'])
 dw = pymysql.connect(dw_info['host'],dw_info['user'],dw_info['password'],dw_info['schema'])
-
+dw_engine = create_engine(f"mysql+pymysql://{dw_info['user']}:{dw_info['password']}@{dw_info['host']}:3306/{dw_info['schema']}")

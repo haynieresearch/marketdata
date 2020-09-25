@@ -23,24 +23,18 @@
 #limitations under the License.
 import csv
 import sys
+import pandas as pd
 from pathlib import Path
-from .database import dw
+from .database import dw_engine
 
 def exportcsv(table,location):
 
     sql = f"SELECT * from {table}"
     outFile = f"{location}{table}.csv"
 
-    cursor = dw.cursor()
-    rows = []
-
     try:
-        cursor.execute(sql)
-        with open(f"{outFile}","w") as out:
-            writer = csv.writer(out, quoting=csv.QUOTE_NONNUMERIC)
-            writer.writerow(col[0] for col in cursor.description)
-            for row in cursor:
-                writer.writerow(row)
+        df = pd.read_sql_query(sql, dw_engine)
+        df.to_csv(f"{outFile}", index=False)
     except Exception as e:
         print('Error: {}'.format(str(e)))
         dw.close()
