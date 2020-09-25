@@ -1,4 +1,4 @@
-# Market Data [![Build Status](https://travis-ci.com/haynieresearch/stock-data.svg?branch=master)](https://travis-ci.com/haynieresearch/stock-data) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/729efafdf51b47adab28e5d5a83ae067)](https://app.codacy.com/gh/haynieresearch/stock-data?utm_source=github.com&utm_medium=referral&utm_content=haynieresearch/stock-data&utm_campaign=Badge_Grade_Dashboard)
+# Market Data [![Build Status](https://travis-ci.com/haynieresearch/stock-data.svg?branch=master)](https://travis-ci.com/haynieresearch/marketdata) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/729efafdf51b47adab28e5d5a83ae067)](https://app.codacy.com/gh/haynieresearch/stock-data?utm_source=github.com&utm_medium=referral&utm_content=haynieresearch/stock-data&utm_campaign=Badge_Grade_Dashboard)
 This program is designed to extract data from a stock market API (currently [AlphaVantage](http://www.alphavantage.co)) and store it into a MySQL database.
 
 ## REQUIREMENTS
