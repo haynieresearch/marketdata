@@ -27,12 +27,10 @@ def numtest(var_input):
         var_input = var_input
     elif isinstance(input, int) == True:
         var_input = float(var_input)
+    elif isinstance(input, str) == True:
+        var_input = float(0)
     elif var_input == None:
-        var_input = float(0)    
+        var_input = float(0)
     else:
-        try:
-            var_input = float(var_input)
-        except Exception as e:
-            print('Error: {}'.format(str(e)))
-            var_input = float(0)
+        var_input = float(0)
     return var_input

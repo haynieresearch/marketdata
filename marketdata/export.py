@@ -32,6 +32,7 @@ def exportcsv(table,location):
     outFile = f"{location}{table}.csv"
 
     cursor = dw.cursor()
+    rows = []
 
     try:
         cursor.execute(sql)

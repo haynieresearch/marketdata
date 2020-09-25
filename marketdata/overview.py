@@ -58,7 +58,7 @@ def overview(uuid,symbol):
         industry = data['Industry']
         address = data['Address'].replace(',', '')
         fte = numtest(data['FullTimeEmployees'])
-        fiscal_ye = numtest(data['FiscalYearEnd'])
+        fiscal_ye = data['FiscalYearEnd']
         latest_qtr = data['LatestQuarter'] + " 00:00:00"
         if data['LatestQuarter'] == "None": latest_qtr = "0000-00-00 00:00:00"
         market_cap = numtest(data['MarketCapitalization'])
