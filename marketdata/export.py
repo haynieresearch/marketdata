@@ -37,5 +37,4 @@ def exportcsv(table,location):
         df.to_csv(f"{outFile}", index=False)
     except Exception as e:
         print('Error: {}'.format(str(e)))
-        dw.close()
         sys.exit(1)
