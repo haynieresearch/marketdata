@@ -29,16 +29,18 @@ from .settings import settings_data
 from .database import db,dw
 from .functions import numtest
 
-api_base = settings_data['datasources']['AlphaVantage']['url']
-api_key = settings_data['datasources']['AlphaVantage']['key']
+api_base    = settings_data['datasources']['AlphaVantage']['url']
+api_key     = settings_data['datasources']['AlphaVantage']['key']
+obs         = settings_data['datasources']['AlphaVantage']['obs']
 
 def daily(uuid,symbol):
     cursor = db.cursor()
     try:
-        api = f"{api_base}TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&outputsize=full&apikey={api_key}"
+        api = f"{api_base}TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&outputsize=compact&apikey={api_key}"
 
         response_data = json.loads(urlreq.urlopen(api).read().decode('utf-8'))
         response_data = response_data['Time Series (Daily)']
+        response_data = dict(list(response_data.items())[0: obs])
 
         for key,value in response_data.items():
             dailyDate        = key + " 00:00:00"

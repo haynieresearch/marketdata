@@ -29,8 +29,9 @@ from .settings import settings_data
 from .database import db,dw
 from .functions import numtest
 
-api_base = settings_data['datasources']['AlphaVantage']['url']
-api_key = settings_data['datasources']['AlphaVantage']['key']
+api_base    = settings_data['datasources']['AlphaVantage']['url']
+api_key     = settings_data['datasources']['AlphaVantage']['key']
+obs         = settings_data['datasources']['AlphaVantage']['obs']
 
 def get_tech(ind,symbol,api_key,base):
     try:
@@ -64,6 +65,7 @@ def technical(uuid,symbol):
         tech_data = [sma,ema,macd,stoch,rsi,stochrsi,willr,bbands,roc,rocr]
         technical = pd.concat(tech_data)
         technical = json.loads(technical.to_json())
+        technical = dict(list(technical.items())[0: obs])
 
         for key,value in technical.items():
             techdate = key + " 00:00:00"

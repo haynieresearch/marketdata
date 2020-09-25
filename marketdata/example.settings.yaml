@@ -13,6 +13,7 @@ datasources:
     AlphaVantage:
         key: ""
         url: "https://www.alphavantage.co/query?function="
+        obs: 30
     IEX:
         key: ""
         url: "https://cloud.iexapis.com/stable/"
