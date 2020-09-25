@@ -36,18 +36,12 @@ def exportcsv(table,location):
 
     try:
         cursor.execute(sql)
-        rows = cursor.fetchall()
+        with open(f"{outFile}","w") as out:
+            writer = csv.writer(out, quoting=csv.QUOTE_NONNUMERIC)
+            writer.writerow(col[0] for col in cursor.description)
+            for row in cursor:
+                writer.writerow(row)
     except Exception as e:
         print('Error: {}'.format(str(e)))
         dw.close()
-
-    if rows:
-        Path(f"{outFile}").touch()
-        columns = [i[0] for i in cursor.description]
-        fp = open(outFile, 'w')
-        csvFile = csv.writer(fp, lineterminator = '\n')
-        csvFile.writerow(columns)
-        csvFile.writerows(rows)
-        fp.close()
-    else:
-        sys.exit(f"Table {table} returned zero observations.")
+        sys.exit(1)
