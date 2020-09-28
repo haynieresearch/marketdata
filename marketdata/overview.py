@@ -57,6 +57,7 @@ def overview(uuid,symbol):
         sector = data['Sector']
         industry = data['Industry']
         address = data['Address'].replace(',', '')
+        address = address.replace('\r', '').address('\n', '')
         fte = numtest(data['FullTimeEmployees'])
         fiscal_ye = data['FiscalYearEnd']
         latest_qtr = data['LatestQuarter'] + " 00:00:00"
