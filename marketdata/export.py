@@ -25,11 +25,12 @@ import csv
 import sys
 import pandas as pd
 from pathlib import Path
+from .settings import settings_data
 from .database import dw
 
 def exportcsv(table,location):
     outFile = f"{location}{table}.csv"
-    chunk_size = 1000
+    chunk_size = settings_data['databases']['marketdw']['chunk_size']
     dw_cursor = dw.cursor()
 
     dw_cursor.execute(f"SELECT COUNT(*) FROM {table}")

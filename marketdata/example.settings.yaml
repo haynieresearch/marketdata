@@ -9,6 +9,7 @@ databases:
         user: ""
         password: ""
         host: ""
+        chunk_size: 10000
 datasources:
     AlphaVantage:
         key: ""

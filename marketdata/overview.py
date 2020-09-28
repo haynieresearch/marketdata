@@ -53,11 +53,15 @@ def overview(uuid,symbol):
             print('Error: {}'.format(str(e)))
 
         name = data['Name'].replace(',', '')
+        name = name.replace('\r', '').replace('\n', '')
         country = data['Country']
+        country = country.replace('\r', '').replace('\n', '')
         sector = data['Sector']
+        sector = sector.replace('\r', '').replace('\n', '')
         industry = data['Industry']
+        industry = industry.replace('\r', '').replace('\n', '')
         address = data['Address'].replace(',', '')
-        address = address.replace('\r', '').address('\n', '')
+        address = address.replace('\r', '').replace('\n', '')
         fte = numtest(data['FullTimeEmployees'])
         fiscal_ye = data['FiscalYearEnd']
         latest_qtr = data['LatestQuarter'] + " 00:00:00"
