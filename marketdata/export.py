@@ -25,19 +25,29 @@ import csv
 import sys
 import pandas as pd
 from pathlib import Path
-from .database import dw_engine
+from .database import dw
 
 def exportcsv(table,location):
-
-    sql = f"SELECT * from {table}"
     outFile = f"{location}{table}.csv"
+    chunk_size = 1000
+    dw_cursor = dw.cursor()
+
+    dw_cursor.execute(f"SELECT COUNT(*) FROM {table}")
+    row_count = dw_cursor.fetchone()[0]
+
+    dw_cursor.execute(f"SELECT * FROM {table} limit 1")
+    with open(outFile, 'w', newline='') as outCsv:
+        wr = csv.writer(outCsv)
+        wr.writerow([d[0] for d in dw_cursor.description])
 
     try:
-        dw_conn = dw_engine.connect()
-        chunks = pd.read_sql(sql, con=dw_conn, chunksize=10000)
+        for offset in range(0, row_count, chunk_size):
+            dw_cursor.execute(f"SELECT * FROM {table} LIMIT {chunk_size} OFFSET {offset};")
 
-        for chunk in chunks:
-            chunk.to_csv(outFile, sep=",", mode="a")
+            with open(outFile, 'a', newline='') as outCsv:
+                csvwriter = csv.writer(outCsv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                for row in dw_cursor:
+                    csvwriter.writerow(row)
     except Exception as e:
         print('Error: {}'.format(str(e)))
         sys.exit(1)
