@@ -25,23 +25,19 @@ import csv
 import sys
 import pandas as pd
 from pathlib import Path
-from .database import dw
+from .database import dw_engine
 
 def exportcsv(table,location):
 
     sql = f"SELECT * from {table}"
     outFile = f"{location}{table}.csv"
-    cursor = dw.cursor()
 
     try:
-        cursor.execute(sql)
+        dw_conn = dw_engine.connect()
+        chunks = pd.read_sql(sql, con=dw_conn, chunksize=10000)
 
-        while True:
-            df = pd.DataFrame(cursor.fetchmany(1000))
-            if len(df) == 0:
-                break
-            else:
-                df.to_csv(outFile, index=False)
+        for chunk in chunks:
+            chunk.to_csv(outFile, sep=",", mode="a")
     except Exception as e:
         print('Error: {}'.format(str(e)))
         sys.exit(1)
