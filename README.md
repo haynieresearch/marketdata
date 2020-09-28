@@ -27,6 +27,8 @@ marketdata.py --technical (update technical data)\
 marketdata.py --overview (update overview/fundamental data)\
 marketdata.py --export table_name /path/to/save/csv/ (export mysql table as csv)
 
+You may notice that the export function is technically not the most efficient. However, we ran into issues with memory usage with more traditional methods of pulling data down from a MySQL table. This method is a compromise of efficiency and best use of system resources.
+
 ## GOAL
 The goal of this project is to enable the creation of time series market datasets for statistical and quantitative analysis, as well as model development. Currently, there are many datasets that exist for historical price data (open, high, low, close), but none that include technical and fundamental data as well in the same observation.
 
