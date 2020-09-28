@@ -25,29 +25,21 @@ libname whs '/path/to/save/datasets';
 
 options mprint symbolgen;
 %macro import(table);
+  x "rm /path/to/save/csv/&table..csv";
 	x "cd /path/to/market/data/python; /usr/bin/python3.6 /path/to/market/data/python/marketdata.py --export &table. /path/to/save/csv/";
-	filename data "/path/to/save/csv/&table..csv" termstr=lf;
-	proc import datafile=data out=whs.&table. dbms=csv replace; GUESSINGROWS=MAX; run;
+	filename data "/path/to/save/csv/&table..csv";
+	proc import datafile=data out=whs.&table. dbms=csv replace; GETNAMES=YES; GUESSINGROWS=MAX; run;
 	filename data;
 %mend import;
 
 x "cd /path/to/market/data/python; /usr/bin/python3.6 /path/to/market/data/python/marketdata.py --daily";
 x "cd /path/to/market/data/python; /usr/bin/python3.6 /path/to/market/data/python/marketdata.py --overview";
 
-%import(market_data_source);
-%import(market_data_analysis);
-%import(market_data_fundamental);
-%import(market_data_technical);
+%%import(currency);
+%import(exchange);
+%import(security);
+%import(type);
 
-%import(security_price);
-%import(market_price);
-%import(industry_price);
-%import(sector_price);
-
-%import(large_cap_analysis);
-%import(mid_cap_analysis);
-%import(small_cap_analysis);
-%import(micro_cap_analysis);
-
-%import(security_overview);
-%import(security_technical);
+%import(overview);
+%import(daily);
+%import(technical);
