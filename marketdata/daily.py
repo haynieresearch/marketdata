@@ -43,6 +43,7 @@ def daily(uuid,symbol):
         response_data = dict(list(response_data.items())[0: obs])
 
         for key,value in response_data.items():
+            print(numtest(value['1. open']))
             dailyDate        = key + " 00:00:00"
             dailyOpen        = numtest(value['1. open'])
             dailyHigh        = numtest(value['2. high'])

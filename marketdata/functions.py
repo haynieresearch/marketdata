@@ -28,9 +28,9 @@ def numtest(var_input):
     elif isinstance(input, int) == True:
         var_input = float(var_input)
     elif isinstance(input, str) == True:
-        var_input = float(0)
+        var_input = float(var_input)
     elif var_input == None:
         var_input = float(0)
     else:
-        var_input = float(0)
+        var_input = float(var_input)
     return var_input
