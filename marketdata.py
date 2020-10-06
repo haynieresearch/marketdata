@@ -49,9 +49,9 @@ if len(args) > 1:
         print("help stuff")
 
     elif arg1.lower() == "--exchange":
-        if arg2.lower() == "nyse":
+        if arg2.lower() == "other":
             import marketdata.symbol
-            marketdata.symbol.update(marketdata.symbol.nyse(),1)
+            marketdata.symbol.update(marketdata.symbol.other(),1)
         elif arg2.lower() == "nasdaq":
             import marketdata.symbol
             marketdata.symbol.update(marketdata.symbol.nasdaq(),2)

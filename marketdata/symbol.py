@@ -28,16 +28,16 @@ from .database import db
 
 datasrc = {}
 datasrc['nasdaq'] = settings_data['datasources']['SymbolList']['nasdaq']
-datasrc['nyse'] = settings_data['datasources']['SymbolList']['nyse']
+datasrc['other'] = settings_data['datasources']['SymbolList']['other']
 
 def nasdaq(source = datasrc['nasdaq']):
-    data = pd.read_csv(source,sep=",")
-    data.columns = ['symbol', 'company']
+    data = pd.read_csv(source,sep="|")
+    data.columns = ['symbol', 'name', 'category', 'test issue', 'status', 'lot', 'etf', 'nextshares']
     return sorted(list(data.symbol));
 
-def nyse(source = datasrc['nyse']):
-    data = pd.read_csv(source,sep=",")
-    data.columns = ['symbol', 'company']
+def other(source = datasrc['other']):
+    data = pd.read_csv(source,sep="|")
+    data.columns = ['symbol', 'name', 'category', 'test issue', 'status', 'lot', 'etf', 'nextshares']
     return sorted(list(data.symbol));
 
 def update(exchange,exchange_id):
