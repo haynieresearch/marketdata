@@ -30,7 +30,7 @@ from .settings import settings_data
 from .database import db,dw
 from .functions import numtest
 
-logging.basicConfig(level=settings_data['global']['loglevel'])
+logging.basicConfig(format='%(levelname)s - %(message)s', level=settings_data['global']['loglevel'])
 
 api_base    = settings_data['datasources']['AlphaVantage']['url']
 api_key     = settings_data['datasources']['AlphaVantage']['key']
