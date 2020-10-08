@@ -20,8 +20,8 @@ In the settings.yaml file you will notice two databases. The first, marketdata, 
 The datasources section for the most part you can leave as-is with the exception of adding your specific API keys.
 
 ## USAGE
-marketdata.py --exchange nyse (update symbol list for NYSE)\
 marketdata.py --exchange nasdaq (update symbol list for NASDAQ)\
+marketdata.py --exchange other (update symbol list for everything other than NASDAQ)\
 marketdata.py --daily (update daily price data)\
 marketdata.py --technical (update technical data)\
 marketdata.py --overview (update overview/fundamental data)\
