@@ -25,6 +25,7 @@ import sys
 import urllib.request as urlreq
 import json
 import pandas as pd
+import threading
 from .settings import settings_data
 from .database import db,dw
 from .functions import numtest
@@ -47,20 +48,74 @@ def get_tech(ind,symbol,api_key,base):
         print('Error: {}'.format(str(e)))
     return data
 
+def update_tech(indicator,symbol):
+    if indicator == "SMA":
+        global sma
+        sma = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+    elif indicator == "EMA":
+        global ema
+        ema = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+    elif indicator == "MACD":
+        global macd
+        macd = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+    elif indicator == "STOCH":
+        global stoch
+        stoch = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+    elif indicator == "RSI":
+        global rsi
+        rsi = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+    elif indicator == "STOCHRSI":
+        global stochrsi
+        stochrsi = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+    elif indicator == "WILLR":
+        global willr
+        willr = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+    elif indicator == "BBANDS":
+        global bbands
+        bbands = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+    elif indicator == "ROC":
+        global roc
+        roc = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+    elif indicator == "ROCR":
+        global rocr
+        rocr = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
+
 def technical(uuid,symbol):
     cursor = db.cursor()
 
     try:
-        sma = pd.DataFrame.from_dict(get_tech("SMA",symbol,api_key,api_base))
-        ema = pd.DataFrame.from_dict(get_tech("EMA",symbol,api_key,api_base))
-        macd = pd.DataFrame.from_dict(get_tech("MACD",symbol,api_key,api_base))
-        stoch = pd.DataFrame.from_dict(get_tech("STOCH",symbol,api_key,api_base))
-        rsi = pd.DataFrame.from_dict(get_tech("RSI",symbol,api_key,api_base))
-        stochrsi = pd.DataFrame.from_dict(get_tech("STOCHRSI",symbol,api_key,api_base))
-        willr = pd.DataFrame.from_dict(get_tech("WILLR",symbol,api_key,api_base))
-        bbands = pd.DataFrame.from_dict(get_tech("BBANDS",symbol,api_key,api_base))
-        roc = pd.DataFrame.from_dict(get_tech("ROC",symbol,api_key,api_base))
-        rocr = pd.DataFrame.from_dict(get_tech("ROCR",symbol,api_key,api_base))
+        t0 = threading.Thread(target=update_tech, args=("SMA",symbol))
+        t1 = threading.Thread(target=update_tech, args=("EMA",symbol))
+        t2 = threading.Thread(target=update_tech, args=("MACD",symbol))
+        t3 = threading.Thread(target=update_tech, args=("STOCH",symbol))
+        t4 = threading.Thread(target=update_tech, args=("RSI",symbol))
+        t5 = threading.Thread(target=update_tech, args=("STOCHRSI",symbol))
+        t6 = threading.Thread(target=update_tech, args=("WILLR",symbol))
+        t7 = threading.Thread(target=update_tech, args=("BBANDS",symbol))
+        t8 = threading.Thread(target=update_tech, args=("ROC",symbol))
+        t9 = threading.Thread(target=update_tech, args=("ROCR",symbol))
+
+        t0.start()
+        t1.start()
+        t2.start()
+        t3.start()
+        t4.start()
+        t5.start()
+        t6.start()
+        t7.start()
+        t8.start()
+        t9.start()
+
+        t0.join()
+        t1.join()
+        t2.join()
+        t3.join()
+        t4.join()
+        t5.join()
+        t6.join()
+        t7.join()
+        t8.join()
+        t9.join()
 
         tech_data = [sma,ema,macd,stoch,rsi,stochrsi,willr,bbands,roc,rocr]
         technical = pd.concat(tech_data)
