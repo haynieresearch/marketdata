@@ -24,10 +24,13 @@
 import sys
 import urllib.request as urlreq
 import json
+import logging
 from re import search
 from .settings import settings_data
 from .database import db,dw
 from .functions import numtest
+
+logging.basicConfig(level=settings_data['global']['loglevel'])
 
 api_base = settings_data['datasources']['AlphaVantage']['url']
 api_key = settings_data['datasources']['AlphaVantage']['key']
@@ -50,7 +53,7 @@ def overview(uuid,symbol):
                 print("Error updating " + symbol + ", API responded with error.")
                 return
         except Exception as e:
-            print('Error: {}'.format(str(e)))
+            logging.error(format(str(e)))
 
         name = data['Name'].replace(',', '')
         name = name.replace('\r', '').replace('\n', '')
@@ -237,7 +240,7 @@ def overview(uuid,symbol):
                 db.commit()
                 print("Adding " + symbol + " to database.")
             except Exception as e:
-                print('Error: {}'.format(str(e)))
+                logging.error(format(str(e)))
         else:
             sql = f"""
                 UPDATE overview SET name = '{name}',
@@ -301,7 +304,7 @@ def overview(uuid,symbol):
                 db.commit()
                 print("Updating " + symbol + " in database.")
             except Exception as e:
-                print('Error: {}'.format(str(e)))
+                logging.error(format(str(e)))
     except Exception as e:
         print(e)
 
@@ -316,6 +319,6 @@ def update():
             overview(uuid, symbol)
 
     except Exception as e:
-        print('Error: {}'.format(str(e)))
+        logging.error(format(str(e)))
         sys.exit(1)
     dw.close()

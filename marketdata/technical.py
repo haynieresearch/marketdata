@@ -26,9 +26,12 @@ import urllib.request as urlreq
 import json
 import pandas as pd
 import threading
+import logging
 from .settings import settings_data
 from .database import db,dw
 from .functions import numtest
+
+logging.basicConfig(level=settings_data['global']['loglevel'])
 
 api_base    = settings_data['datasources']['AlphaVantage']['url']
 api_key     = settings_data['datasources']['AlphaVantage']['key']
@@ -39,13 +42,13 @@ def get_tech(ind,symbol,api_key,base):
         api = base + f"{ind}" + "&symbol=" + symbol + "&interval=daily&time_period=10&series_type=open&apikey=" + api_key
         data = json.loads(urlreq.urlopen(api).read().decode())
     except Exception as e:
-        print('Error: {}'.format(str(e)))
+        logging.error(format(str(e)))
 
     try:
         json_txt = f"Technical Analysis: {ind}"
         data = data[json_txt]
     except Exception as e:
-        print('Error: {}'.format(str(e)))
+        logging.error(format(str(e)))
     return data
 
 def update_tech(indicator,symbol):
@@ -81,8 +84,8 @@ def update_tech(indicator,symbol):
         rocr = pd.DataFrame.from_dict(get_tech(indicator,symbol,api_key,api_base))
 
 def technical(uuid,symbol):
+    logging.debug("Processing technical data for: " + symbol + ".")
     cursor = db.cursor()
-
     try:
         t0 = threading.Thread(target=update_tech, args=("SMA",symbol))
         t1 = threading.Thread(target=update_tech, args=("EMA",symbol))
@@ -123,6 +126,8 @@ def technical(uuid,symbol):
         technical = dict(list(technical.items())[0: obs])
 
         for key,value in technical.items():
+            logging.debug("Updating technical data for " + symbol + " on " + key + ".")
+
             techdate = key + " 00:00:00"
             techsma = numtest(value['SMA'])
             techema = numtest(value['EMA'])
@@ -183,17 +188,22 @@ def technical(uuid,symbol):
                         {techbband_upper},
                         {techbband_middle});
                     """
+
                 try:
                     cursor.execute(sql)
                     db.commit()
                 except Exception as e:
-                    print('Error: {}'.format(str(e)))
+                    error = format(str(e))
+                    if error.find("Duplicate entry") != -1:
+                        logging.debug("Data already exists for " + symbol + " on date " + key + ".")
+                    else:
+                        logging.error(format(str(e)))
 
             except Exception as e:
-                print('Error: {}'.format(str(e)))
+                logging.error(format(str(e)))
 
     except Exception as e:
-        print('Error: {}'.format(str(e)))
+        logging.error(format(str(e)))
 
 def update():
     dw_cursor = dw.cursor()
@@ -206,7 +216,7 @@ def update():
             technical(uuid, symbol)
 
     except Exception as e:
-        print('Error: {}'.format(str(e)))
+        logging.error(format(str(e)))
         sys.exit(1)
     dw.close()
 
@@ -221,6 +231,6 @@ def update_segment(segment):
             technical(uuid, symbol)
 
     except Exception as e:
-        print('Error: {}'.format(str(e)))
+        logging.error(format(str(e)))
         sys.exit(1)
     dw.close()

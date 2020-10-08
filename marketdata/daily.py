@@ -25,15 +25,19 @@ import sys
 import urllib.request as urlreq
 import json
 import pandas as pd
+import logging
 from .settings import settings_data
 from .database import db,dw
 from .functions import numtest
+
+logging.basicConfig(level=settings_data['global']['loglevel'])
 
 api_base    = settings_data['datasources']['AlphaVantage']['url']
 api_key     = settings_data['datasources']['AlphaVantage']['key']
 obs         = settings_data['datasources']['AlphaVantage']['obs']
 
 def daily(uuid,symbol):
+    logging.debug("Processing daily data for: " + symbol + ".")
     cursor = db.cursor()
     try:
         api = f"{api_base}TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&outputsize=compact&apikey={api_key}"
@@ -43,7 +47,8 @@ def daily(uuid,symbol):
         response_data = dict(list(response_data.items())[0: obs])
 
         for key,value in response_data.items():
-            print(numtest(value['1. open']))
+            logging.debug("Updating daily data for " + symbol + " on " + key + ".")
+
             dailyDate        = key + " 00:00:00"
             dailyOpen        = numtest(value['1. open'])
             dailyHigh        = numtest(value['2. high'])
@@ -80,17 +85,22 @@ def daily(uuid,symbol):
                     {dailyDivAmt},
                     {dailySplit_c});
                 """
+
                 try:
                     cursor.execute(sql)
                     db.commit()
                 except Exception as e:
-                    print('Error: {}'.format(str(e)))
+                    error = format(str(e))
+                    if error.find("Duplicate entry") != -1:
+                        logging.debug("Data already exists for " + symbol + " on date " + key + ".")
+                    else:
+                        logging.error(format(str(e)))
 
             except Exception as e:
-                print('Error: {}'.format(str(e)))
+                logging.error(format(str(e)))
 
     except Exception as e:
-        print('Error: {}'.format(str(e)))
+        logging.error(format(str(e)))
 
 def update():
     dw_cursor = dw.cursor()
@@ -103,7 +113,7 @@ def update():
             daily(uuid, symbol)
 
     except Exception as e:
-        print('Error: {}'.format(str(e)))
+        logging.error(format(str(e)))
         sys.exit(1)
     dw.close()
 
@@ -118,6 +128,6 @@ def update_segment(segment):
             daily(uuid, symbol)
 
     except Exception as e:
-        print('Error: {}'.format(str(e)))
+        logging.error(format(str(e)))
         sys.exit(1)
     dw.close()
