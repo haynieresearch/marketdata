@@ -25,8 +25,7 @@
 import sys
 from datetime import date, datetime, timedelta
 
-now = date.today().strftime("%Y-%m-%d")
-now = "2021-01-20"
+now = (datetime.now() - timedelta(1)).strftime('%Y-%m-%d')
 
 if len(sys.argv) == 1:
     args = sys.argv
