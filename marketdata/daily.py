@@ -97,7 +97,7 @@ def daily(uuid,symbol,api_date,sql_date):
                 {uClose},
                 {uVolume},
                 {fOpen},
-                {FHigh},
+                {fHigh},
                 {fLow},
                 {fClose},
                 {fVolume},
