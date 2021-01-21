@@ -1,9 +1,9 @@
 # Market Data [![Build Status](https://travis-ci.com/haynieresearch/marketdata.svg?branch=master)](https://travis-ci.com/haynieresearch/marketdata) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/729efafdf51b47adab28e5d5a83ae067)](https://app.codacy.com/gh/haynieresearch/stock-data?utm_source=github.com&utm_medium=referral&utm_content=haynieresearch/stock-data&utm_campaign=Badge_Grade_Dashboard)
-This program is designed to extract data from a stock market API (currently [AlphaVantage](http://www.alphavantage.co)) and store it into a MySQL database.
+This program is designed to extract data from a stock market API (currently [IEX](https://iexcloud.io/docs/api)) and store it into a MySQL database.
 
 ## REQUIREMENTS
 * A MySQL/MariaDB master server and read replica with proper access rights. Currently, we are using Amazon AWS RDS.
-* An AlphaVantage API key. Depending on your use, you will need the premium data access due to the high volume of API calls.
+* An IEX Cloud API key. Depending on your use, you will need the premium data access due to the high volume of API calls.
 * Python 3.5+
 * Comfortable with terminal environments, this is intended to be an automated tool.
 
@@ -23,18 +23,20 @@ The datasources section for the most part you can leave as-is with the exception
 marketdata.py --exchange nasdaq (update symbol list for NASDAQ)\
 marketdata.py --exchange other (update symbol list for everything other than NASDAQ)\
 marketdata.py --daily (update daily price data)\
-marketdata.py --technical (update technical data)\
 marketdata.py --overview (update overview/fundamental data)\
 marketdata.py --export table_name /path/to/save/csv/ (export mysql table as csv)
 
 You may notice that the export function is technically not the most efficient. However, we ran into issues with memory usage with more traditional methods of pulling data down from a MySQL table. This method is a compromise of efficiency and best use of system resources.
+
+## IN PROGRESS
+We are switching direction with the technical indicators from pulling down from a provider to calculating in house. With almost all of the data providers it has proven to be costly both in processing time and dollars to effectively gather all of this data. As we transition from the old process to new, we will include our SAS code to calculate the technical indicators so you can replicate in your environment.
 
 ## GOAL
 The goal of this project is to enable the creation of time series market datasets for statistical and quantitative analysis, as well as model development. Currently, there are many datasets that exist for historical price data (open, high, low, close), but none that include technical and fundamental data as well in the same observation.
 
 ## LICENSE
 Copyright (c) 2020 Haynie IPHC, LLC\
-Developed by Haynie Research & Development LLC
+Developed by Haynie Research & Development, LLC for Black Label Investment Partners, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
