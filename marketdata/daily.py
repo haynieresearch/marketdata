@@ -107,6 +107,8 @@ def daily(uuid,symbol,api_date,sql_date):
                 {changePercent});
             """
 
+            print(sq)
+            
             try:
                 cursor.execute(sql)
                 db.commit()
