@@ -32,100 +32,129 @@ from .functions import numtest
 
 logging.basicConfig(format='%(levelname)s - %(message)s', level=settings_data['global']['loglevel'])
 
-api_base    = settings_data['datasources']['AlphaVantage']['url']
-api_key     = settings_data['datasources']['AlphaVantage']['key']
-obs         = settings_data['datasources']['AlphaVantage']['obs']
+api_base = settings_data['datasources']['IEX']['url']
+api_key = settings_data['datasources']['IEX']['key']
 
-def daily(uuid,symbol):
+def daily(uuid,symbol,api_date,sql_date):
     logging.debug("Processing daily data for: " + symbol + ".")
+
     cursor = db.cursor()
     try:
-        api = f"{api_base}TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&outputsize=compact&apikey={api_key}"
+        api = f"{api_base}/stock/{symbol}/chart/date/{api_date}?chartByDay=true&token={api_key}"
+        response_data = json.loads(urlreq.urlopen(api).read().decode())
+        response_data = response_data[-1]
 
-        response_data = json.loads(urlreq.urlopen(api).read().decode('utf-8'))
-        response_data = response_data['Time Series (Daily)']
-        response_data = dict(list(response_data.items())[0: obs])
+        open            = numtest(response_data['open'])
+        high            = numtest(response_data['high'])
+        low             = numtest(response_data['low'])
+        close           = numtest(response_data['close'])
+        volume          = numtest(response_data['volume'])
+        uOpen           = numtest(response_data['uOpen'])
+        uHigh           = numtest(response_data['uHigh'])
+        uLow            = numtest(response_data['uLow'])
+        uClose          = numtest(response_data['uClose'])
+        uVolume         = numtest(response_data['uVolume'])
+        fOpen           = numtest(response_data['fOpen'])
+        fHigh           = numtest(response_data['fHigh'])
+        fLow            = numtest(response_data['fLow'])
+        fClose          = numtest(response_data['fClose'])
+        fVolume         = numtest(response_data['fVolume'])
+        change          = numtest(response_data['change'])
+        changePercent   = numtest(response_data['changePercent'])
 
-        for key,value in response_data.items():
-            logging.debug("Updating daily data for " + symbol + " on " + key + ".")
-
-            dailyDate        = key + " 00:00:00"
-            dailyOpen        = numtest(value['1. open'])
-            dailyHigh        = numtest(value['2. high'])
-            dailyLow         = numtest(value['3. low'])
-            dailyClose       = numtest(value['4. close'])
-            dailyAdjClose    = numtest(value['5. adjusted close'])
-            dailyVolume      = numtest(value['6. volume'])
-            dailyDivAmt      = numtest(value['7. dividend amount'])
-            dailySplit_c     = numtest(value['8. split coefficient'])
+        try:
+            sql = f"""
+            INSERT INTO
+            daily (
+                security_id,
+                date,
+                open,
+                high,
+                low,
+                close,
+                volume,
+                uOpen,
+                uClose,
+                uLow,
+                uVolume,
+                fOpen,
+                fClose,
+                fHigh,
+                fLow,
+                fVolume,
+                change,
+                changePercent)
+            values(
+                {uuid},
+                '{sql_date}',
+                {open},
+                {high},
+                {low},
+                {close},
+                {volume},
+                {uOpen},
+                {uHigh},
+                {uClose},
+                {uVolume},
+                {fOpen},
+                {FHigh},
+                {fLow},
+                {fClose},
+                {fVolume},
+                {change},
+                {changePercent});
+            """
 
             try:
-                sql = f"""
-                INSERT INTO
-                daily (
-                    security_id,
-                    date,
-                    open,
-                    high,
-                    low,
-                    close,
-                    adj_close,
-                    volume,
-                    div_amt,
-                    split_c)
-                values(
-                    {uuid},
-                    '{dailyDate}',
-                    {dailyOpen},
-                    {dailyHigh},
-                    {dailyLow},
-                    {dailyClose},
-                    {dailyAdjClose},
-                    {dailyVolume},
-                    {dailyDivAmt},
-                    {dailySplit_c});
-                """
-
-                try:
-                    cursor.execute(sql)
-                    db.commit()
-                except Exception as e:
-                    error = format(str(e))
-                    if error.find("Duplicate entry") != -1:
-                        logging.debug("Data already exists for " + symbol + " on date " + key + ".")
-                    else:
-                        logging.error(format(str(e)))
-
+                cursor.execute(sql)
+                db.commit()
             except Exception as e:
-                logging.error(format(str(e)))
+                error = format(str(e))
+                if error.find("Duplicate entry") != -1:
+                    logging.debug("Data already exists for " + symbol + " on date " + key + ".")
+                else:
+                    logging.error(format(str(e)))
+
+        except Exception as e:
+            logging.error(format(str(e)))
 
     except Exception as e:
         logging.error(format(str(e)))
 
-def update():
+def update(date):
+    api_date = date.replace('-', '')
+    data_date = date
+    sql_date = data_date + " 00:00:00"
+
     dw_cursor = dw.cursor()
+
     try:
         dw_cursor.execute("select uuid, symbol from security")
         results = dw_cursor.fetchall()
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            daily(uuid, symbol)
+            daily(uuid, symbol, api_date, sql_date)
 
     except Exception as e:
         logging.error(format(str(e)))
         sys.exit(1)
     dw.close()
 
-def update_segment(segment):
+def update_segment(segment,date):
+    api_date = date.replace('-', '')
+    data_date = date
+    sql_date = data_date + " 00:00:00"
+
     dw_cursor = dw.cursor()
+
     try:
         dw_cursor.execute(f"select uuid, symbol from security_segment where segment = '{segment}'")
         results = dw_cursor.fetchall()
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            daily(uuid, symbol)
+            daily(uuid, symbol, api_date, sql_date)
 
     except Exception as e:
         logging.error(format(str(e)))

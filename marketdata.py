@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.8
+#!/usr/local/bin/python3.9
 #**********************************************************
 #* CATEGORY	SOFTWARE
 #* GROUP	MARKET DATA
@@ -23,6 +23,10 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 import sys
+from datetime import date, datetime, timedelta
+
+now = date.today().strftime("%Y-%m-%d")
+now = "2021-01-20"
 
 if len(sys.argv) == 1:
     args = sys.argv
@@ -61,38 +65,18 @@ if len(args) > 1:
     elif arg1.lower() == "--daily":
         if len(sys.argv) == 2:
             import marketdata.daily
-            marketdata.daily.update()
+            marketdata.daily.update(now)
         elif len(sys.argv) > 2:
             if arg2.lower() == "--segment":
                 if len(sys.argv) > 3:
                     import marketdata.daily
-                    marketdata.daily.update_segment(arg3.lower())
+                    marketdata.daily.update_segment(arg3.lower(),now)
                 else:
                     print("Error: missing segment value.")
             else:
                 print("Error: invalid option.")
         else:
             print("Error: other error.")
-
-    elif arg1.lower() == "--technical":
-        if len(sys.argv) == 2:
-            import marketdata.technical
-            marketdata.technical.update()
-        elif len(sys.argv) > 2:
-            if arg2.lower() == "--segment":
-                if len(sys.argv) > 3:
-                    import marketdata.technical
-                    marketdata.technical.update_segment(arg3.lower())
-                else:
-                    print("Error: missing segment value.")
-            else:
-                print("Error: invalid option.")
-        else:
-            print("Error: other error.")
-
-    elif arg1.lower() == "--overview":
-        import marketdata.overview
-        marketdata.overview.update()
 
     elif arg1.lower() == "--export":
         if len(sys.argv) == 2:
