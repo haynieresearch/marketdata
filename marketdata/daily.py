@@ -65,7 +65,7 @@ def daily(uuid,symbol,api_date,sql_date):
         try:
             sql = f"""
             INSERT INTO
-            daily (
+            daily(
                 security_id,
                 date,
                 open,
@@ -83,7 +83,7 @@ def daily(uuid,symbol,api_date,sql_date):
                 fLow,
                 fClose,
                 fVolume,
-                change,
+                `change`,
                 changePercent)
             values(
                 {uuid},
@@ -106,8 +106,6 @@ def daily(uuid,symbol,api_date,sql_date):
                 {change},
                 {changePercent});
             """
-
-            print(sql)
 
             try:
                 cursor.execute(sql)
