@@ -40,7 +40,7 @@ def daily(uuid,symbol,api_date,sql_date):
 
     cursor = db.cursor()
     try:
-        api = f"{api_base}/stock/{symbol}/chart/date/{api_date}?chartByDay=true&token={api_key}"
+        api = f"{api_base}/stock/{symbol}/previous?token={api_key}"
         response_data = json.loads(urlreq.urlopen(api).read().decode())
         response_data = response_data[-1]
 
@@ -61,6 +61,8 @@ def daily(uuid,symbol,api_date,sql_date):
         fVolume         = numtest(response_data['fVolume'])
         change          = numtest(response_data['change'])
         changePercent   = numtest(response_data['changePercent'])
+        data_date       = numtest(response_data['date'])
+        sql_date        = data_date + " 00:00:00"
 
         try:
             sql = f"""
@@ -123,11 +125,7 @@ def daily(uuid,symbol,api_date,sql_date):
     except Exception as e:
         logging.error(format(str(e)))
 
-def update(date):
-    api_date = date.replace('-', '')
-    data_date = date
-    sql_date = data_date + " 00:00:00"
-
+def update():
     dw_cursor = dw.cursor()
 
     try:
@@ -136,18 +134,14 @@ def update(date):
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            daily(uuid, symbol, api_date, sql_date)
+            daily(uuid, symbol)
 
     except Exception as e:
         logging.error(format(str(e)))
         sys.exit(1)
     dw.close()
 
-def update_segment(segment,date):
-    api_date = date.replace('-', '')
-    data_date = date
-    sql_date = data_date + " 00:00:00"
-
+def update_segment(segment):
     dw_cursor = dw.cursor()
 
     try:
@@ -156,7 +150,7 @@ def update_segment(segment,date):
         for row in results:
             uuid = row[0]
             symbol = row[1]
-            daily(uuid, symbol, api_date, sql_date)
+            daily(uuid, symbol)
 
     except Exception as e:
         logging.error(format(str(e)))

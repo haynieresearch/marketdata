@@ -64,12 +64,12 @@ if len(args) > 1:
     elif arg1.lower() == "--daily":
         if len(sys.argv) == 2:
             import marketdata.daily
-            marketdata.daily.update(now)
+            marketdata.daily.update()
         elif len(sys.argv) > 2:
             if arg2.lower() == "--segment":
                 if len(sys.argv) > 3:
                     import marketdata.daily
-                    marketdata.daily.update_segment(arg3.lower(),now)
+                    marketdata.daily.update_segment(arg3.lower())
                 else:
                     print("Error: missing segment value.")
             else:
