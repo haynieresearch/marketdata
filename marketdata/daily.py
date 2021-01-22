@@ -35,7 +35,7 @@ logging.basicConfig(format='%(levelname)s - %(message)s', level=settings_data['g
 api_base = settings_data['datasources']['IEX']['url']
 api_key = settings_data['datasources']['IEX']['key']
 
-def daily(uuid,symbol,api_date,sql_date):
+def daily(uuid,symbol):
     logging.debug("Processing daily data for: " + symbol + ".")
 
     cursor = db.cursor()
