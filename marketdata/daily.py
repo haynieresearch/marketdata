@@ -42,7 +42,6 @@ def daily(uuid,symbol):
     try:
         api = f"{api_base}/stock/{symbol}/previous?token={api_key}"
         response_data = json.loads(urlreq.urlopen(api).read().decode())
-        response_data = response_data[-1]
 
         open            = numtest(response_data['open'])
         high            = numtest(response_data['high'])
@@ -61,7 +60,7 @@ def daily(uuid,symbol):
         fVolume         = numtest(response_data['fVolume'])
         change          = numtest(response_data['change'])
         changePercent   = numtest(response_data['changePercent'])
-        data_date       = numtest(response_data['date'])
+        data_date       = response_data['date']
         sql_date        = data_date + " 00:00:00"
 
         try:
