@@ -114,7 +114,7 @@ def daily(uuid,symbol):
             except Exception as e:
                 error = format(str(e))
                 if error.find("Duplicate entry") != -1:
-                    logging.debug("Data already exists for " + symbol + " on date " + key + ".")
+                    logging.debug("Data already exists for " + symbol + " on date " + data_date + ".")
                 else:
                     logging.error(format(str(e)))
 
