@@ -62,15 +62,6 @@ if len(args) > 1:
         if len(sys.argv) == 2:
             import marketdata.daily
             marketdata.daily.update()
-        elif len(sys.argv) > 2:
-            if arg2.lower() == "--segment":
-                if len(sys.argv) > 3:
-                    import marketdata.daily
-                    marketdata.daily.update_segment(arg3.lower())
-                else:
-                    print("Error: missing segment value.")
-            else:
-                print("Error: invalid option.")
         else:
             print("Error: other error.")
 
