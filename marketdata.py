@@ -23,7 +23,6 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 import sys
-from datetime import date, datetime, timedelta
 
 if len(sys.argv) == 1:
     args = sys.argv
@@ -74,6 +73,14 @@ if len(args) > 1:
                 print("Error: invalid option.")
         else:
             print("Error: other error.")
+
+    elif arg1.lower() == "--history":
+        if len(sys.argv) == 2:
+            print("Error: you must specify a date.")
+            exit(0)
+        else:
+            import marketdata.history
+            marketdata.history.update(arg2.lower())
 
     elif arg1.lower() == "--export":
         if len(sys.argv) == 2:

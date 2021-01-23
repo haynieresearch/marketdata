@@ -13,6 +13,9 @@ databases:
         host: ""
         chunk_size: 100000
 datasources:
+    IEX:
+        key: ""
+        url: "https://cloud.iexapis.com/stable"
     AlphaVantage:
         key: ""
         url: "https://www.alphavantage.co/query?function="

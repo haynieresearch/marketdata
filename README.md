@@ -22,9 +22,12 @@ The datasources section for the most part you can leave as-is with the exception
 ## USAGE
 marketdata.py --exchange nasdaq (update symbol list for NASDAQ)\
 marketdata.py --exchange other (update symbol list for everything other than NASDAQ)\
-marketdata.py --daily (update daily price data)\
+marketdata.py --daily (update daily price data, see note below)\
+marketdata.py --history YYYY-MM-DD (update historical price data)\
 marketdata.py --overview (update overview/fundamental data)\
 marketdata.py --export table_name /path/to/save/csv/ (export mysql table as csv)
+
+Note: We use the "previous" API endpoint from IEX for the daily function to save on costs as the weighting for previous data weighting is two; whereas the historical endpoint is weighted as ten. However, this means you need to schedule the daily job to run automatically to download consistently. We are aware system issues happen, so there is now a history function to pull any missing data. Just realize it is quite a bit more expensive to pull this data vs. the daily data. The daily data using the "previous" API endpoint is available after 4AM ET Tues-Sat.
 
 You may notice that the export function is technically not the most efficient. However, we ran into issues with memory usage with more traditional methods of pulling data down from a MySQL table. This method is a compromise of efficiency and best use of system resources.
 
@@ -36,7 +39,7 @@ The goal of this project is to enable the creation of time series market dataset
 
 ## LICENSE
 Copyright (c) 2020 Haynie IPHC, LLC\
-Developed by Haynie Research & Development, LLC for Black Label Investment Partners, LLC
+Developed by Haynie Research & Development, LLC for Black Label Investment Partners, LLC under license.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
