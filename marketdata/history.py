@@ -60,8 +60,6 @@ def history(uuid,symbol,api_date,sql_date):
         fVolume         = numtest(response_data['fVolume'])
         change          = numtest(response_data['change'])
         changePercent   = numtest(response_data['changePercent'])
-        data_date       = response_data['date']
-        sql_date        = data_date + " 00:00:00"
 
         try:
             sql = f"""
@@ -126,8 +124,7 @@ def history(uuid,symbol,api_date,sql_date):
 
 def update(date):
     api_date = date.replace('-', '')
-    data_date = date
-    sql_date = data_date + " 00:00:00"
+    sql_date = date + " 00:00:00"
 
     dw_cursor = dw.cursor()
 
