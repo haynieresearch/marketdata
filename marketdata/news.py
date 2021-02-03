@@ -40,14 +40,22 @@ def news(uuid,symbol):
         response_data = json.loads(urlreq.urlopen(api).read().decode())
 
         datetime    = response_data[0]['datetime']
-        headline    = "'" + str(response_data[0]['headline']) + "'"
-        source      = "'" + str(response_data[0]['source']) + "'"
-        url         = "'" + str(response_data[0]['url']) + "'"
-        summary     = "'" + str(response_data[0]['summary']) + "'"
-        related     = "'" + str(response_data[0]['related']) + "'"
-        image       = "'" + str(response_data[0]['image']) + "'"
-        lang        = "'" + str(response_data[0]['lang']) + "'"
-        paywall     = "'" + str(response_data[0]['hasPaywall']) + "'"
+        headline = response_data[0]['headline'].replace(',', '')
+        headline = headline.replace('\r', '').replace('\n', '')
+        source = response_data[0]['source'].replace(',', '')
+        source = source.replace('\r', '').replace('\n', '')
+        url = response_data[0]['url'].replace(',', '')
+        url = url.replace('\r', '').replace('\n', '')
+        summary = response_data[0]['summary'].replace(',', '')
+        summary = summary.replace('\r', '').replace('\n', '')
+        related = response_data[0]['related'].replace(',', '')
+        related = related.replace('\r', '').replace('\n', '')
+        image = response_data[0]['image'].replace(',', '')
+        image = image.replace('\r', '').replace('\n', '')
+        lang = response_data[0]['lang'].replace(',', '')
+        lang = lang.replace('\r', '').replace('\n', '')
+        paywall = response_data[0]['hasPaywall'].replace(',', '')
+        paywall = paywall.replace('\r', '').replace('\n', '')
         current_dt  = date.today()
 
         try:
@@ -63,11 +71,11 @@ def news(uuid,symbol):
                 import_date)
             values(
                 {uuid},
-                {datetime},
-                {headline},
-                {source},
-                {url},
-                {summary},
+                '{datetime}',
+                '{headline}',
+                '{source}',
+                '{url}',
+                '{summary}',
                 '{current_dt}');
             """
 
