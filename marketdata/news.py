@@ -39,15 +39,15 @@ def news(uuid,symbol):
         api = f"{api_base}/stock/{symbol}/news/last/50?token={api_key}"
         response_data = json.loads(urlreq.urlopen(api).read().decode())
 
-        datetime    = response_data['datetime']
-        headline    = response_data['headline']
-        source      = response_data['source']
-        url         = response_data['url']
-        summary     = response_data['summary']
-        related     = response_data['related']
-        image       = response_data['image']
-        lang        = response_data['lang']
-        paywall     = response_data['hasPaywall']
+        datetime    = response_data[0]['datetime']
+        headline    = response_data[0]['headline']
+        source      = response_data[0]['source']
+        url         = response_data[0]['url']
+        summary     = response_data[0]['summary']
+        related     = response_data[0]['related']
+        image       = response_data[0]['image']
+        lang        = response_data[0]['lang']
+        paywall     = response_data[0]['hasPaywall']
         current_dt  = date.today()
 
         try:
