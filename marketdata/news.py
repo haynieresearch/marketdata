@@ -40,14 +40,14 @@ def news(uuid,symbol):
         response_data = json.loads(urlreq.urlopen(api).read().decode())
 
         datetime    = response_data[0]['datetime']
-        headline    = response_data[0]['headline']
-        source      = response_data[0]['source']
-        url         = response_data[0]['url']
-        summary     = response_data[0]['summary']
-        related     = response_data[0]['related']
-        image       = response_data[0]['image']
-        lang        = response_data[0]['lang']
-        paywall     = response_data[0]['hasPaywall']
+        headline    = '"' + response_data[0]['headline'] + '"'
+        source      = '"' + response_data[0]['source'] + '"'
+        url         = '"' + response_data[0]['url'] + '"'
+        summary     = '"' + response_data[0]['summary'] + '"'
+        related     = '"' + response_data[0]['related'] + '"'
+        image       = '"' + response_data[0]['image'] + '"'
+        lang        = '"' + response_data[0]['lang'] + '"'
+        paywall     = '"' + response_data[0]['hasPaywall'] + '"'
         current_dt  = date.today()
 
         try:
@@ -64,10 +64,10 @@ def news(uuid,symbol):
             values(
                 {uuid},
                 {datetime},
-                '{headline}',
-                '{source}',
-                '{url}',
-                '{summary}',
+                {headline},
+                {source},
+                {url},
+                {summary},
                 '{current_dt}');
             """
 
