@@ -2,12 +2,7 @@
 #* CATEGORY	SOFTWARE
 #* GROUP	MARKET DATA
 #* AUTHOR	LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
-#* DATE		2020-08-27
-#* PURPOSE	ETL MARKET DATA INTO MYSQL TABLES
 #* FILE		EXPORT.PY
-#**********************************************************
-#* MODIFICATIONS
-#* 2020-08-27 - LHAYNIE - INITIAL VERSION
 #**********************************************************
 #ETL Stock Market Data
 #Copyright 2020 Haynie IPHC, LLC

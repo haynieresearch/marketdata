@@ -3,12 +3,7 @@
 #* CATEGORY	SOFTWARE
 #* GROUP	MARKET DATA
 #* AUTHOR	LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
-#* DATE		2020-08-20
-#* PURPOSE	ETL MARKET DATA INTO MYSQL TABLES
 #* FILE		MARKETDATA.PY
-#**********************************************************
-#* MODIFICATIONS
-#* 2020-08-20 - LHAYNIE - INITIAL VERSION
 #**********************************************************
 #ETL Stock Market Data
 #Copyright 2020 Haynie IPHC, LLC
@@ -62,6 +57,13 @@ if len(args) > 1:
         if len(sys.argv) == 2:
             import marketdata.daily
             marketdata.daily.update()
+        else:
+            print("Error: other error.")
+
+    elif arg1.lower() == "--news":
+        if len(sys.argv) == 2:
+            import marketdata.news
+            marketdata.news.update()
         else:
             print("Error: other error.")
 
