@@ -42,27 +42,35 @@ def news(uuid,symbol):
         datetime = response_data[0]['datetime']
         headline = response_data[0]['headline'].replace(',', '')
         headline = headline.replace('\r', '').replace('\n', '')
+        headline = headline.replace('"', '')
         source = response_data[0]['source'].replace(',', '')
         source = source.replace('\r', '').replace('\n', '')
+        source = source.replace('"', '')
         url = response_data[0]['url'].replace(',', '')
         url = url.replace('\r', '').replace('\n', '')
+        url = url.replace('"', '')
         summary = response_data[0]['summary'].replace(',', '')
         summary = summary.replace('\r', '').replace('\n', '')
+        summary = summary.replace('"', '')
         related = response_data[0]['related'].replace(',', '')
         related = related.replace('\r', '').replace('\n', '')
+        related = related.replace('"', '')
         image = response_data[0]['image'].replace(',', '')
         image = image.replace('\r', '').replace('\n', '')
+        image = image.replace('"', '')
         lang = response_data[0]['lang'].replace(',', '')
         lang = lang.replace('\r', '').replace('\n', '')
+        lang = lang.replace('"', '')
         paywall = str(response_data[0]['hasPaywall'])
         paywall = paywall.replace(',', '')
         paywall = paywall.replace('\r', '').replace('\n', '')
+        paywall = paywall.replace('"', '')
         current_dt  = date.today()
 
         try:
             sql = f"""
             INSERT INTO
-            daily(
+            news(
                 security_id,
                 datetime,
                 headline,
@@ -79,6 +87,9 @@ def news(uuid,symbol):
                 '{summary}',
                 '{current_dt}');
             """
+
+            print(sql)
+            exit(0)
 
             try:
                 cursor.execute(sql)
