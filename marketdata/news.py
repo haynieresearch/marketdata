@@ -64,10 +64,10 @@ def news(uuid,symbol):
             values(
                 {uuid},
                 {datetime},
-                {headline},
-                {source},
-                {url},
-                {summary},
+                '{headline}',
+                '{source}',
+                '{url}',
+                '{summary}',
                 '{current_dt}');
             """
 
