@@ -88,9 +88,6 @@ def news(uuid,symbol):
                 '{current_dt}');
             """
 
-            print(sql)
-            exit(0)
-
             try:
                 cursor.execute(sql)
                 db.commit()
