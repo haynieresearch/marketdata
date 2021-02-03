@@ -36,7 +36,7 @@ def news(uuid,symbol):
 
     cursor = db.cursor()
     try:
-        api = f"{api_base}/stock/{symbol}/news/last/50?token={api_key}"
+        api = f"{api_base}/stock/{symbol}/news?token={api_key}"
         response_data = json.loads(urlreq.urlopen(api).read().decode())
 
         datetime = response_data[0]['datetime']
