@@ -39,7 +39,11 @@ def news(uuid,symbol):
         api = f"{api_base}/stock/{symbol}/news?token={api_key}"
         response_data = json.loads(urlreq.urlopen(api).read().decode())
 
-        datetime = response_data[0]['datetime']
+        datetime = str(response_data[0]['datetime'])
+        datetime = datetime.replace(',', '')
+        datetime = datetime.replace('\r', '').replace('\n', '')
+        datetime = datetime.replace('"', '')
+        datetime = datetime.replace("'", "")
         headline = response_data[0]['headline'].replace(',', '')
         headline = headline.replace('\r', '').replace('\n', '')
         headline = headline.replace('"', '')
