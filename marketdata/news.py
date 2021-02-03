@@ -39,7 +39,7 @@ def news(uuid,symbol):
         api = f"{api_base}/stock/{symbol}/news/last/50?token={api_key}"
         response_data = json.loads(urlreq.urlopen(api).read().decode())
 
-        datetime    = response_data[0]['datetime']
+        datetime = response_data[0]['datetime']
         headline = response_data[0]['headline'].replace(',', '')
         headline = headline.replace('\r', '').replace('\n', '')
         source = response_data[0]['source'].replace(',', '')
@@ -54,7 +54,8 @@ def news(uuid,symbol):
         image = image.replace('\r', '').replace('\n', '')
         lang = response_data[0]['lang'].replace(',', '')
         lang = lang.replace('\r', '').replace('\n', '')
-        paywall = response_data[0]['hasPaywall'].replace(',', '')
+        paywall = str(response_data[0]['hasPaywall'])
+        paywall = paywall.replace(',', '')
         paywall = paywall.replace('\r', '').replace('\n', '')
         current_dt  = date.today()
 
