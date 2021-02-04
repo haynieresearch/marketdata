@@ -32,6 +32,11 @@ Note: We use the "previous" API endpoint from IEX for the daily function to save
 
 You may notice that the export function is technically not the most efficient. However, we ran into issues with memory usage with more traditional methods of pulling data down from a MySQL table. This method is a compromise of efficiency and best use of system resources.
 
+## EXAMPLE SAS CODE
+There are two example programs included with this repo. The first, market_data_import.sas, is an example of how you can convert the MySQL tables into SAS datasets. The second, fix_missing_data.sas, is an example of once you have the process up and running it look at the previous 7 days and average the number of observations (less 10%) and then reprocess the days with less than the average results.
+
+Note: You will need to edit dataset names, libnames, and the path to the marketdata program.
+
 ## IN PROGRESS
 We are switching direction with the technical indicators from pulling down from a provider to calculating in house. With almost all of the data providers it has proven to be costly both in processing time and dollars to effectively gather all of this data. As we transition from the old process to new, we will include our SAS code to calculate the technical indicators so you can replicate in your environment.
 
