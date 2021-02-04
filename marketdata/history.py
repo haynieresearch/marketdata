@@ -124,7 +124,7 @@ def update(date):
     dw_cursor = dw.cursor()
 
     try:
-        dw_cursor.execute("select uuid, symbol from security")
+        dw_cursor.execute(f"SELECT uuid, symbol FROM security WHERE uuid NOT IN (select security_id from daily where date = '{sql_date}')")
         results = dw_cursor.fetchall()
         for row in results:
             uuid = row[0]
