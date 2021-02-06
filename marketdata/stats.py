@@ -145,9 +145,6 @@ def stats(uuid,symbol):
                 '{updated_date}');
             """
 
-            print(sql)
-            exit(0)
-
             try:
                 cursor.execute(sql)
                 db.commit()
