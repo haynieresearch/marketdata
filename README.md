@@ -23,6 +23,7 @@ The datasources section for the most part you can leave as-is with the exception
 marketdata.py --exchange nasdaq (update symbol list for NASDAQ)\
 marketdata.py --exchange other (update symbol list for everything other than NASDAQ)\
 marketdata.py --daily (update daily price data, see note below)\
+marketdata.py --intraday (get hourly intraday data)\
 marketdata.py --history YYYY-MM-DD (update historical price data)\
 marketdata.py --overview (update overview/fundamental data)\
 marketdata.py --news (update news data)\
