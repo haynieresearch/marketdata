@@ -74,6 +74,13 @@ if len(args) > 1:
         else:
             print("Error: other error.")
 
+    elif arg1.lower() == "--intraday":
+        if len(sys.argv) == 2:
+            import marketdata.intraday
+            marketdata.intraday.update()
+        else:
+            print("Error: other error.")
+
     elif arg1.lower() == "--history":
         if len(sys.argv) == 2:
             print("Error: you must specify a date.")
