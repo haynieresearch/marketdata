@@ -21,6 +21,7 @@ import urllib.request as urlreq
 import json
 import pandas as pd
 import logging
+import requests
 from .settings import settings_data
 from .database import db,dw
 from .functions import numtest
@@ -30,13 +31,16 @@ logging.basicConfig(format='%(levelname)s - %(message)s', level=settings_data['g
 api_base = settings_data['datasources']['IEX']['url']
 api_key = settings_data['datasources']['IEX']['key']
 
+session = requests.Session()
+
 def history(uuid,symbol,api_date,sql_date):
     logging.debug("Processing historical data for: " + symbol + ".")
 
     cursor = db.cursor()
     try:
         api = f"{api_base}/stock/{symbol}/chart/date/{api_date}?chartByDay=true&token={api_key}"
-        response_data = json.loads(urlreq.urlopen(api).read().decode())
+        #response_data = json.loads(urlreq.urlopen(api).read().decode())
+        response_data = session.get(api).json()
 
         open            = numtest(response_data[0]['open'])
         high            = numtest(response_data[0]['high'])

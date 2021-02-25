@@ -21,6 +21,7 @@ import urllib.request as urlreq
 import json
 import pandas as pd
 import logging
+import requests
 from datetime import date
 from .settings import settings_data
 from .database import db,dw
@@ -31,13 +32,16 @@ logging.basicConfig(format='%(levelname)s - %(message)s', level=settings_data['g
 api_base = settings_data['datasources']['IEX']['url']
 api_key = settings_data['datasources']['IEX']['key']
 
+session = requests.Session()
+
 def news(uuid,symbol):
     logging.debug("Processing news data for: " + symbol + ".")
 
     cursor = db.cursor()
     try:
         api = f"{api_base}/stock/{symbol}/news?token={api_key}"
-        response_data = json.loads(urlreq.urlopen(api).read().decode())
+        #response_data = json.loads(urlreq.urlopen(api).read().decode())
+        response_data = session.get(api).json()
 
         datetime = str(response_data[0]['datetime'])
         datetime = datetime.replace(',', '')
